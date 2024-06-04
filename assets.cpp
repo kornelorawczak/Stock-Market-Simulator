@@ -20,6 +20,84 @@ public:
     virtual double* monthly() = 0;
 };
 
+class Gold{
+private:
+    string host, path;
+    double current_rate;
+    double monthly_rates[30];
+    void parseData(const string& jsonData, double& rate)  {
+        try {
+            auto json = json::parse(jsonData);
+            rate = json[0]["cena"].get<double>();
+        } catch (const exception& e) {
+            cerr << "Failed to parse JSON data: " << e.what() << endl;
+        }
+    }
+    string generateDateUrl(int days)  {
+        auto now = chrono::system_clock::now();
+        auto past = now - chrono::hours(24*days);
+
+        time_t tt = chrono::system_clock::to_time_t(past);
+        tm local_tm = *localtime(&tt);
+
+        ostringstream oss;
+        oss << put_time(&local_tm, "%Y-%m-%d");
+        string dateStr = oss.str();
+
+        string pastURL = "/api/cenyzlota/" + dateStr + "/?format=json";
+        return pastURL;
+    }
+    double getPastValue(int days)  {
+        string pastUrl = generateDateUrl(days);
+        Client cli(host.c_str());
+        auto res = cli.Get(pastUrl);
+        double pastDayRate = 0.0;
+        if (res && res->status == 200) {
+            parseData(res->body, pastDayRate);
+        } else {
+            throw exception();
+            //cerr << "Failed to get data from NBP API for the previous day. HTTP status: " << (res ? res->status : -1) << endl;
+        }
+
+        return pastDayRate;
+    }
+public:
+    Gold() : host("api.nbp.pl"), path("/api/cenyzlota") {}
+
+    void refreshData() {
+        Client cli(host.c_str());
+        auto res = cli.Get(path.c_str());
+
+        if (res && res->status == 200) {
+            parseData(res->body, current_rate);
+        } else {
+            cerr << "Failed to get data from NBP API. HTTP status: " << (res ? res->status : -1) << endl;
+        }
+    }
+    double getValue() {
+        return current_rate;
+    }
+    double difference() {
+        return ((current_rate - getPastValue(1))/getPastValue(1)) * 100;
+    }
+    double* monthly() {
+        monthly_rates[0] = getValue();
+        int i = 1;
+        int j = 1;
+        while(i < 30){
+            try {
+                monthly_rates[i] = getPastValue(j);
+                i++;
+                j++;
+            }
+            catch(const exception &e){
+                j++;
+                continue;
+            }
+        }
+        return monthly_rates;
+    }
+};
 
 class Currency : Data{
 private:
@@ -27,7 +105,7 @@ private:
     string path;
     string id;
     double current_rate;
-    double month_rates[30];
+    double monthly_rates[30];
     void parseData(const string& jsonData, double& rate) override {
         try {
             auto json = json::parse(jsonData);
@@ -36,7 +114,7 @@ private:
             cerr << "Failed to parse JSON data: " << e.what() << endl;
         }
     }
-    string generateDateUrl(int days) {
+    string generateDateUrl(int days) override {
         auto now = chrono::system_clock::now();
         auto past = now - chrono::hours(24*days);
 
@@ -51,9 +129,9 @@ private:
         return pastURL;
     }
     double getPastValue(int days) override {
-        string yesterdayUrl = generateDateUrl(days);
+        string pastUrl = generateDateUrl(days);
         Client cli(host.c_str());
-        auto res = cli.Get(yesterdayUrl);
+        auto res = cli.Get(pastUrl);
         double pastDayRate = 0.0;
         if (res && res->status == 200) {
             parseData(res->body, pastDayRate);
@@ -91,12 +169,12 @@ public:
     }
 
     double* monthly() override {
-        month_rates[0] = getValue();
+        monthly_rates[0] = getValue();
         int i = 1;
         int j = 1;
         while(i < 30){
             try {
-                month_rates[i] = getPastValue(j);
+                monthly_rates[i] = getPastValue(j);
                 i++;
                 j++;
             }
@@ -105,13 +183,13 @@ public:
                 continue;
             }
         }
-        return month_rates;
+        return monthly_rates;
     }
 };
 
 
 int main() {
-    cout << "USD: " << endl;
+    /*cout << "USD: " << endl;
     auto usd = Currency("USD");
     usd.refreshData();
     cout << usd.getValue() << endl;
@@ -128,7 +206,18 @@ int main() {
     double* chart_data2 = gbp.monthly();
     for (int i = 0; i < 30; i++){
         cout << "Day " + to_string((-1) * i) + ": " + to_string(chart_data2[i]) << endl;
+    }*/
+
+    auto gold = Gold();
+    gold.refreshData();
+    cout << gold.getValue() << endl;
+    cout << gold.difference() << endl;
+    double* chart_data3 = gold.monthly();
+    for (int i = 0; i < 30; i++){
+        cout << "Day " + to_string((-1) * i) + ": " + to_string(chart_data3[i]) << endl;
     }
     return 0;
 }
 
+// todo:
+// zwinąć złoto w klasę currency i zmienić jej nazwę na NBPApi_Data
