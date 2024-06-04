@@ -2,6 +2,7 @@
 #define STARTMENU_H
 
 #include <QMainWindow>
+#include <QDateTime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +20,8 @@ public:
     ~StartMenu();
 
     double getBalance() const { return balance; }
-    void setBalance(double newBalance);
+    void addDepositAmount(double newBalance);
+    void subtractWithdrawalAmount(double amount);
 
 signals:
     void balanceChanged(double newBalance);
@@ -27,7 +29,12 @@ signals:
 private:
     Ui::StartMenu *ui;
     double balance;
+    QDateTime date; //obecny czas
 
     void updateBalanceDisplay();
+
+    void showDepositDialog();
+
+    void showWithdrawalDialog();
 };
 #endif // STARTMENU_H

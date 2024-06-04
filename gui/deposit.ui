@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(0, 0, 0)</string>
+  </property>
   <widget class="QLabel" name="depoAmountLabel">
    <property name="geometry">
     <rect>
