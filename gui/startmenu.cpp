@@ -3,11 +3,14 @@
 #include "deposit.h"
 #include "withdrawal.h"
 #include "history.h"
+#include "tradinginstruments.h"
 
 StartMenu::StartMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartMenu)
     , balance(1000.0) //start account balance
+    , allocatedFunds(0.0)
+    , freeFunds(balance)
 {
     ui->setupUi(this);
 
@@ -18,17 +21,34 @@ StartMenu::StartMenu(QWidget *parent)
 
     ui->instrumentsButton->setStyleSheet("QPushButton { color: green; font-size: 22px; }"); //uzywanie css dla obiektu
 
+    //subpage history
     QStackedWidget* historyWidget = findChild<QStackedWidget*>("historyWidget");
     History* historyWidgetObject = new History();
     historyWidget->addWidget(historyWidgetObject);
 
+    //subpage tradinginstruments
+    QStackedWidget* tradingInstrumentsWidget = findChild<QStackedWidget*>("tradingInstrumentsWidget");
+    TradingInstruments* tradingInstrumentsObject = new TradingInstruments();
+    tradingInstrumentsWidget->addWidget(tradingInstrumentsObject);
+
+    connect(ui->historyButton, &QPushButton::clicked, [historyWidget, historyWidgetObject, tradingInstrumentsWidget]() {
+        tradingInstrumentsWidget->setVisible(false);
+        historyWidget->setVisible(true);
+        historyWidget->setCurrentWidget(historyWidgetObject);
+    });
+
+    connect(ui->instrumentsButton, &QPushButton::clicked, [tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget]() {
+        historyWidget->setVisible(false);
+        tradingInstrumentsWidget->setVisible(true);
+        tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject);
+    });
+
     updateBalanceDisplay();
+    updateAllocatedFundsDisplay();
+    updateFreeFundsDisplay();
 
     connect(ui->depositButton, &QPushButton::clicked, this, &StartMenu::showDepositDialog);
     connect(ui->withdrawalButton, &QPushButton::clicked, this, &StartMenu::showWithdrawalDialog);
-    connect(ui->historyButton, &QPushButton::clicked, [historyWidget, historyWidgetObject]() {
-        historyWidget->setCurrentWidget(historyWidgetObject);
-    });
 }
 
 StartMenu::~StartMenu()
@@ -47,15 +67,21 @@ void StartMenu::updateDateTime() {
 void StartMenu::addDepositAmount(double amount)
 {
     balance += amount;
+    freeFunds += amount;
     emit balanceChanged(balance);
+    emit freeFundsChanged(freeFunds);
     updateBalanceDisplay();
+    updateFreeFundsDisplay();
 }
 
 void StartMenu::subtractWithdrawalAmount(double amount)
 {
     balance -= amount;
+    freeFunds -= amount;
     emit balanceChanged(balance);
+    emit freeFundsChanged(freeFunds);
     updateBalanceDisplay();
+    updateFreeFundsDisplay();
 }
 
 void StartMenu::updateBalanceDisplay()
@@ -63,6 +89,19 @@ void StartMenu::updateBalanceDisplay()
     ui->balanceValue->setStyleSheet("QLabel { font-size: 24px; }");
     ui->balanceValue->setText(QString::number(balance, 'f', 2));
 }
+
+void StartMenu::updateAllocatedFundsDisplay()
+{
+    ui->allocatedFundsValue->setStyleSheet("QLabel { font-size: 24px; }");
+    ui->allocatedFundsValue->setText(QString::number(allocatedFunds, 'f', 2));
+}
+
+void StartMenu::updateFreeFundsDisplay()
+{
+    ui->freeFundsValue->setStyleSheet("QLabel { font-size: 24px; }");
+    ui->freeFundsValue->setText(QString::number(freeFunds, 'f', 2));
+}
+
 //deposit page
 void StartMenu::showDepositDialog() {
     Deposit depositDialog(this);

@@ -26,6 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         deposit.h deposit.cpp deposit.ui
         withdrawal.h withdrawal.cpp withdrawal.ui
         history.h history.cpp history.ui
+        tradinginstruments.h tradinginstruments.cpp tradinginstruments.ui
 
 
 
