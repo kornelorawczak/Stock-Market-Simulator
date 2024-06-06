@@ -46,19 +46,37 @@ QWidget#mainWin {
     <widget class="QLabel" name="fundsLabel">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>30</y>
-       <width>151</width>
+       <x>30</x>
+       <y>50</y>
+       <width>141</width>
        <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel#fundsLabel {
-	font-size: 24px;
+	font-size: 18px;
 }</string>
      </property>
      <property name="text">
       <string>Free Funds:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="AllocatedFundsLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>181</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#AllocatedFundsLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Allocated Funds:</string>
      </property>
     </widget>
    </widget>
@@ -201,7 +219,7 @@ QWidget#mainWin {
       <rect>
        <x>30</x>
        <y>10</y>
-       <width>91</width>
+       <width>51</width>
        <height>31</height>
       </rect>
      </property>
@@ -218,7 +236,7 @@ QWidget#mainWin {
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>40</y>
+       <y>43</y>
        <width>131</width>
        <height>21</height>
       </rect>
@@ -248,6 +266,24 @@ QWidget#mainWin {
      </property>
      <property name="text">
       <string>Markets: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dateTimeLabel">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>19</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#dateTimeLabel {
+	font-size: 16px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -410,6 +446,23 @@ QWidget#mainWin {
       <string>withdrawal</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QStackedWidget" name="historyWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QStackedWidget#historyWidget {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
    </widget>
   </widget>
  </widget>

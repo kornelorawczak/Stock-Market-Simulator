@@ -25,6 +25,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         deposit.h deposit.cpp deposit.ui
         withdrawal.h withdrawal.cpp withdrawal.ui
+        history.h history.cpp history.ui
+
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET gui APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

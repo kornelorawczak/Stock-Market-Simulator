@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDateTime>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -13,7 +14,7 @@ QT_END_NAMESPACE
 class StartMenu : public QMainWindow
 {
     Q_OBJECT
-    Q_PROPERTY(double balance READ getBalance WRITE setBalance NOTIFY balanceChanged)
+    Q_PROPERTY(double balance READ getBalance NOTIFY balanceChanged)
 
 public:
     StartMenu(QWidget *parent = nullptr);
@@ -29,12 +30,11 @@ signals:
 private:
     Ui::StartMenu *ui;
     double balance;
-    QDateTime date; //obecny czas
+    QTimer *timer;
 
+    void updateDateTime();
     void updateBalanceDisplay();
-
     void showDepositDialog();
-
     void showWithdrawalDialog();
 };
 #endif // STARTMENU_H
