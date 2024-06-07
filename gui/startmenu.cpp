@@ -19,27 +19,35 @@ StartMenu::StartMenu(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &StartMenu::updateDateTime);
     timer->start(1000);
 
-    ui->instrumentsButton->setStyleSheet("QPushButton { color: green; font-size: 22px; }"); //uzywanie css dla obiektu
+    ui->instrumentsButton->setStyleSheet("QPushButton { color: green; font-size: 22px; }");
 
     //subpage history
     QStackedWidget* historyWidget = findChild<QStackedWidget*>("historyWidget");
     History* historyWidgetObject = new History();
     historyWidget->addWidget(historyWidgetObject);
+    historyWidget->setVisible(false);
 
     //subpage tradinginstruments
     QStackedWidget* tradingInstrumentsWidget = findChild<QStackedWidget*>("tradingInstrumentsWidget");
     TradingInstruments* tradingInstrumentsObject = new TradingInstruments();
     tradingInstrumentsWidget->addWidget(tradingInstrumentsObject);
+    tradingInstrumentsWidget->setVisible(true);
 
-    connect(ui->historyButton, &QPushButton::clicked, [historyWidget, historyWidgetObject, tradingInstrumentsWidget]() {
+    tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject); //initially trading instruments are mainpage
+
+    connect(ui->historyButton, &QPushButton::clicked, [this, historyWidget, historyWidgetObject, tradingInstrumentsWidget]() {
         tradingInstrumentsWidget->setVisible(false);
         historyWidget->setVisible(true);
+        ui->instrumentsButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
+        ui->historyButton->setStyleSheet("QPushButton { color: green; font-size: 22px; }");
         historyWidget->setCurrentWidget(historyWidgetObject);
     });
 
-    connect(ui->instrumentsButton, &QPushButton::clicked, [tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget]() {
+    connect(ui->instrumentsButton, &QPushButton::clicked, [this, tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget]() {
         historyWidget->setVisible(false);
         tradingInstrumentsWidget->setVisible(true);
+        ui->instrumentsButton->setStyleSheet("QPushButton { color: green; font-size: 22px; }");
+        ui->historyButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject);
     });
 
