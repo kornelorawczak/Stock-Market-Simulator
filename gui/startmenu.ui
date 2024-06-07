@@ -281,7 +281,7 @@ QWidget#mainWin {
       <rect>
        <x>30</x>
        <y>70</y>
-       <width>131</width>
+       <width>71</width>
        <height>21</height>
       </rect>
      </property>
@@ -307,6 +307,19 @@ QWidget#mainWin {
       <string notr="true">QLabel#dateTimeLabel {
 	font-size: 16px;
 }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="marketStatusValue">
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>69</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
      </property>
      <property name="text">
       <string/>
@@ -512,6 +525,23 @@ QWidget#mainWin {
     </property>
     <widget class="QWidget" name="page_3"/>
     <widget class="QWidget" name="page_4"/>
+   </widget>
+   <widget class="QStackedWidget" name="portfolioWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QStackedWidget#portfolioWidget {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <widget class="QWidget" name="page_5"/>
+    <widget class="QWidget" name="page_6"/>
    </widget>
   </widget>
  </widget>

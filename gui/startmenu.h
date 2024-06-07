@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDateTime>
 #include <QTimer>
+#include <QDate>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,9 +32,13 @@ private:
     Ui::StartMenu *ui;
     double balance;
     QTimer *timer;
+    QTimer *midnightTimer; //new day checker
+    int currentWeekday;
     double freeFunds;
     double allocatedFunds;
+    QString marketStatus;
 
+    void updateMarketStatus();
     void updateDateTime();
     void updateBalanceDisplay();
     void updateAllocatedFundsDisplay();
