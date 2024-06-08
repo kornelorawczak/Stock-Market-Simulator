@@ -2,6 +2,11 @@
 #define HISTORY_H
 
 #include <QDialog>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QTableWidgetItem>
+#include <QCoreApplication>
 
 namespace Ui {
 class History;
@@ -15,6 +20,7 @@ public:
     explicit History(QWidget *parent = nullptr);
     ~History();
 
+    void loadCSVData(const QString &filepath);
 private:
     Ui::History *ui;
 };

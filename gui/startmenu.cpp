@@ -16,7 +16,16 @@ StartMenu::StartMenu(QWidget *parent)
 {
     ui->setupUi(this);
 
+    loadSettingsfromCSV();
+
+    updateBalanceDisplay();
+    updateAllocatedFundsDisplay();
+    updateFreeFundsDisplay();
+
     ui->instrumentsButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
+    ui->refreshValue->setStyleSheet("QPushButton { font-size: 15px; }");
+
+    ui->refreshValue->setVisible(true);
 
     //timer setup for date and time
     timer = new QTimer(this);
@@ -87,6 +96,7 @@ StartMenu::StartMenu(QWidget *parent)
 
     connect(ui->depositButton, &QPushButton::clicked, this, &StartMenu::showDepositDialog);
     connect(ui->withdrawalButton, &QPushButton::clicked, this, &StartMenu::showWithdrawalDialog);
+    connect(ui->refreshValue, &QPushButton::clicked, this, &StartMenu::updateRefreshButton);
 
     updateBalanceDisplay();
     updateAllocatedFundsDisplay();
@@ -95,6 +105,7 @@ StartMenu::StartMenu(QWidget *parent)
 
 StartMenu::~StartMenu()
 {
+    saveSettingstoCSV();
     delete ui;
     delete timer;
 }
@@ -103,6 +114,12 @@ void StartMenu::updateDateTime() {
     QDateTime dateTime = QDateTime::currentDateTime();
     QString dateTimeText = dateTime.toString("hh:mm:ss dd:MM:yyyy");
     ui->dateTimeLabel->setText(dateTimeText);
+}
+
+void StartMenu::updateRefreshButton() {
+    QDateTime now = QDateTime::currentDateTime();
+    QString dateTimeText = now.toString("hh:mm:ss dd:MM:yyyy");
+    ui->refreshValue->setText(dateTimeText);
 }
 
 void StartMenu::updateMarketStatus() {
@@ -170,4 +187,49 @@ void StartMenu::showWithdrawalDialog() {
     withdrawal withdrawalDialog(this);
     connect(&withdrawalDialog, &withdrawal::withdrawalMade, this, &StartMenu::subtractWithdrawalAmount);
     withdrawalDialog.exec();
+}
+
+void StartMenu::saveSettingstoCSV() {
+    QFile file("settings.csv");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file for writing.";
+        return;
+    }
+
+    QTextStream out(&file);
+    out << "LastRefresh,Balance,FreeFunds,AllocatedFunds\n";
+    out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << ","
+        << balance << ","
+        << freeFunds << ","
+        << allocatedFunds << "\n";
+
+    file.close();
+}
+
+void StartMenu::loadSettingsfromCSV() {
+    QFile file("settings.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file for reading.";
+        return;
+    }
+
+    QTextStream in(&file);
+    QString header = in.readLine(); // Skip header line
+    QString line = in.readLine(); // Read data line
+    QStringList fields = line.split(',');
+
+    if (fields.size() == 4) {
+        QDateTime lastRefresh = QDateTime::fromString(fields[0], "yyyy-MM-dd hh:mm:ss");
+        balance = fields[1].toDouble();
+        freeFunds = fields[2].toDouble();
+        allocatedFunds = fields[3].toDouble();
+
+        // Update the UI or any other necessary fields
+        ui->refreshValue->setText(lastRefresh.toString("hh:mm:ss dd:MM:yyyy"));
+        updateBalanceDisplay();
+        updateFreeFundsDisplay();
+        updateAllocatedFundsDisplay();
+    }
+
+    file.close();
 }

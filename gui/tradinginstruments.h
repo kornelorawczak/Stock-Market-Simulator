@@ -2,6 +2,11 @@
 #define TRADINGINSTRUMENTS_H
 
 #include <QDialog>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QTableWidgetItem>
+#include <QCoreApplication>
 
 namespace Ui {
 class TradingInstruments;
@@ -17,6 +22,8 @@ public:
 
 private:
     Ui::TradingInstruments *ui;
+
+    void loadCSVData(const QString &filepath);
 };
 
 #endif // TRADINGINSTRUMENTS_H

@@ -18,18 +18,38 @@
 	border:
 }</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QTableWidget" name="instrumentsTable">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>290</y>
-     <width>231</width>
-     <height>81</height>
+     <x>0</x>
+     <y>0</y>
+     <width>940</width>
+     <height>484</height>
     </rect>
    </property>
-   <property name="text">
-    <string>instrumenty</string>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
+   <column>
+    <property name="text">
+     <string>name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>quotes</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>change</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>category</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

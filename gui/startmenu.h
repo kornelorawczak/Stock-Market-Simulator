@@ -23,6 +23,9 @@ public:
     void addDepositAmount(double newBalance);
     void subtractWithdrawalAmount(double amount);
 
+public slots:
+    void updateRefreshButton();
+
 signals:
     void balanceChanged(double newBalance);
     void allocatedFundsChanged(double amount);
@@ -45,5 +48,8 @@ private:
     void updateFreeFundsDisplay();
     void showDepositDialog();
     void showWithdrawalDialog();
+
+    void saveSettingstoCSV();
+    void loadSettingsfromCSV();
 };
 #endif // STARTMENU_H
