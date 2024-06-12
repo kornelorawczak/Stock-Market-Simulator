@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <httplib.h>
+#include <fstream>
+#include <ctime>
 #include <nlohmann/json.hpp>
 
 
@@ -14,8 +16,9 @@ private:
     virtual double getPastValue(int days) = 0;
     virtual string generateDate(int days) = 0;
 public:
+    virtual string getName() const = 0;
     virtual void refreshData() = 0;
-    virtual double getValue() = 0;
+    virtual double getValue() const = 0;
     virtual double difference() = 0;
     virtual double* monthly() = 0;
 };
@@ -53,7 +56,7 @@ public:
             cerr << "Failed to get data from NBP API. HTTP status: " << (res ? res->status : -1) << endl;
         }
     }
-    double getValue() override {
+    double getValue() const override {
         return current_price;
     }
 
@@ -79,6 +82,7 @@ public:
         }
         return monthly_rates;
     }
+    string getName() const override = 0;
 };
 
 
@@ -114,6 +118,9 @@ public:
         this->host = "api.nbp.pl";
         this->path = "/api/exchangerates/rates/A/" + id + "/?format=json";
     }
+    string getName() const override {
+        return id;
+    }
 };
 
 class Gold : public NBPApi {
@@ -146,7 +153,34 @@ public:
         this->host = "api.nbp.pl";
         this->path = "/api/cenyzlota/?format=json";
     }
+    string getName() const override {
+        return "GOLD";
+    }
 };
+
+class Serializer {
+public:
+    static void historyRecord(const Data& asset, double quantity){
+        ofstream file("history.csv", ios_base::app);
+        if (!file.is_open()) {
+            cerr << "File can't be open!" << endl;
+            return;
+        }
+        time_t now = time(nullptr);
+        char dateStr[11];
+        strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", localtime(&now));
+        file << asset.getName() << "," << asset.getValue() << "," << dateStr << "," << quantity << endl;
+        if(!file){
+            cerr << "File input error!" << endl;
+        }
+        file.close();
+    }
+    static void deleteHistory(){
+        ofstream file("history.csv", ios_base::trunc);
+        file.close();
+    }
+};
+
 
 
 int main() {
@@ -171,14 +205,16 @@ int main() {
 
     auto gold = Gold();
     gold.refreshData();
+    auto usd = Currency("USD");
+    usd.refreshData();
     cout << gold.getValue() << endl;
     cout << gold.difference() << endl;
-    double* chart_data3 = gold.monthly();
+    /*double* chart_data3 = gold.monthly();
     for (int i = 0; i < 30; i++){
         cout << "Day " + to_string((-1) * i) + ": " + to_string(chart_data3[i]) << endl;
-    }
+    } */
+    Serializer::historyRecord(gold, 15.13);
+    Serializer::historyRecord(usd, 1.5);
+
     return 0;
 }
-
-// todo:
-// zwinąć złoto w klasę currency i zmienić jej nazwę na NBPApi_Data
