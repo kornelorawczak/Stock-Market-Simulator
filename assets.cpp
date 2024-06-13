@@ -228,38 +228,101 @@ public:
 };
 
 class Serializer {
+private:
+    static map<string, double> portfolio;
+    static void loadPortfolio(){
+        ifstream portfolioFile("portfolio.csv");
+        if (!portfolioFile.is_open()) {
+            cerr << "Can't open portfolio.csv!" << endl;
+            return;
+        }
+        portfolio.clear();
+        string line;
+        while(getline(portfolioFile, line)){
+            istringstream iss(line);
+            string id;
+            int qty;
+            if (!(iss >> id >> qty)){
+                break;
+            }
+            portfolio[id] = qty;
+        }
+        portfolioFile.close();
+    }
+    static void savePortfolio() {
+        ofstream portfolioFile("portfolio.csv");
+        if (!portfolioFile.is_open()) {
+            cerr << "Nie można otworzyć pliku portfolio.csv!" << endl;
+            return;
+        }
+
+        for (const auto& p : portfolio) {
+            portfolioFile << p.first << " " << p.second << endl;
+        }
+        portfolioFile.close();
+    }
+    static void updatePortfolio(const string& assetName, double quantity){
+        loadPortfolio();
+        auto it = portfolio.find(assetName);
+        if (it != portfolio.end()){
+            if (quantity > 0) {
+                it->second += quantity;
+            }
+            else{
+                if (it->second + quantity < 0) {
+                    throw runtime_error("Can't sell that much!");
+                }
+                it->second += quantity;
+            }
+        }
+        else{
+            if (quantity < 0){
+                throw runtime_error("Can't sell that much!");
+            }
+            portfolio[assetName] = quantity;
+        }
+        savePortfolio();
+    }
 public:
-    static void historyRecord(const Data& asset, double quantity){
-        ofstream file("history.csv", ios_base::app);
-        if (!file.is_open()) {
+    static void performAction(const Data& asset, double quantity){
+        ofstream history_file("history.csv", ios_base::app);
+        if (!history_file.is_open()) {
             cerr << "File can't be open!" << endl;
             return;
         }
         time_t now = time(nullptr);
         char dateStr[11];
         strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", localtime(&now));
-        file << asset.getName() << "," << asset.getValue() << "," << dateStr << "," << quantity << endl;
-        if(!file){
+        history_file << asset.getName() << "," << asset.getValue() << "," << dateStr << "," << quantity << endl;
+        if(!history_file){
             cerr << "File input error!" << endl;
         }
-        file.close();
+        history_file.close();
+        updatePortfolio(asset.getName(), quantity);
     }
     static void deleteHistory(){
         ofstream file("history.csv", ios_base::trunc);
         file.close();
     }
+    static void deletePortfolio(){
+        ofstream file("portfolio.csv", ios_base::trunc);
+        file.close();
+    }
 };
 
-
+map<string, double> Serializer::portfolio;
 
 int main() {
     auto btc = CryptoApi("BTC");
     btc.refreshData();
     cout << btc.getValue() << endl;
-    cout << btc.difference() << endl;
+    /*cout << btc.difference() << endl;
     double* chart_data = btc.monthly();
     for (int i = 0; i < 30; i++){
         cout << "Day " << (-1) * i << ": " << chart_data[i] << endl;
     }
+     */
+    Serializer::performAction(btc, 20);
+    Serializer::performAction(btc, -10);
     return 0;
 }
