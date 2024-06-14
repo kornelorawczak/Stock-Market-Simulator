@@ -20,7 +20,8 @@ public:
     explicit History(QWidget *parent = nullptr);
     ~History();
 
-    void loadCSVData(const QString &filepath);
+    void saveCSVData();
+    void loadCSVData();
 private:
     Ui::History *ui;
 };

@@ -40,6 +40,8 @@ TradingInstruments::TradingInstruments(QWidget *parent)
     ui->instrumentsTable->verticalHeader()->hide();
 
     loadCSVData("C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/data/instruments.csv");
+
+    connect(ui->instrumentsTable, &QTableWidget::cellClicked, this, &TradingInstruments::onCellClicked);
 }
 
 TradingInstruments::~TradingInstruments()
@@ -84,3 +86,11 @@ void TradingInstruments::loadCSVData(const QString &filePath)
         }
     }
 }
+
+void TradingInstruments::onCellClicked(int row, int column) {
+    if (column == 0) {
+        QString instrumentName = ui->instrumentsTable->item(row, column)->text();
+        emit instrumentSelected(instrumentName);
+    }
+}
+

@@ -25,6 +25,7 @@ public:
 
 public slots:
     void updateRefreshButton();
+    void showDetails(const QString &instrumentName); // Slot to handle showing details
 
 signals:
     void balanceChanged(double newBalance);
@@ -48,6 +49,7 @@ private:
     void updateFreeFundsDisplay();
     void showDepositDialog();
     void showWithdrawalDialog();
+    void showDetailsWidget(const QString &instrumentName);
 
     void saveSettingstoCSV();
     void loadSettingsfromCSV();

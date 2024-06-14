@@ -17,7 +17,7 @@ History::History(QWidget *parent)
     headers << "name" << "price" << "date" << "quantity" << "side" << "profit";
     ui->historyTable->setHorizontalHeaderLabels(headers);
 
-    // Set all sections to stretch
+    //adapt headers that they fit table size
     ui->historyTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     ui->historyTable->setStyleSheet(
@@ -39,19 +39,58 @@ History::History(QWidget *parent)
     ui->historyTable->verticalHeader()->setDefaultSectionSize(30);
     ui->historyTable->verticalHeader()->hide();
 
-    //QString filePath = QCoreApplication::applicationDirPath() + "/data/history.csv";
-    //qDebug() << "Attempting to open file at path:" << filePath; // Debug the file path
-    loadCSVData("C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/data/history.csv");
+    loadCSVData();
 }
 
 History::~History()
 {
     delete ui;
+    saveCSVData();
 }
 
-void History::loadCSVData(const QString &filePath)
+void History::saveCSVData()
 {
+    QString filePath = QCoreApplication::applicationDirPath() + "/history.csv";
     QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Cannot open file for writing: " + file.errorString());
+        return;
+    }
+
+    QTextStream out(&file);
+    int rowCount = ui->historyTable->rowCount();
+    int columnCount = ui->historyTable->columnCount();
+
+    for (int row = 0; row < rowCount; ++row) {
+        QStringList rowData;
+        for (int column = 0; column < columnCount; ++column) {
+            QTableWidgetItem* item = ui->historyTable->item(row, column);
+            if (item)
+                rowData << item->text();
+            else
+                rowData << "";  // Handle null items
+        }
+        out << rowData.join(',') << "\n";
+    }
+
+    file.close();
+}
+
+
+void History::loadCSVData()
+{
+    QString filePath = QCoreApplication::applicationDirPath() + "/history.csv";
+    qDebug() << "File Path: " <<filePath;
+    QFile file(filePath);
+
+    if (!file.exists()) {
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QMessageBox::warning(this, "Error", "Failed to create file: " + file.errorString());
+            return;
+        }
+        file.close(); // Close the newly created empty file
+    }
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::warning(this, "Error", "Cannot open file: " + file.errorString());
         return;

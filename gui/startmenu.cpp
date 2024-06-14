@@ -5,11 +5,12 @@
 #include "history.h"
 #include "tradinginstruments.h"
 #include "portfolio.h"
+#include "details.h"
 
 StartMenu::StartMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartMenu)
-    , balance(1000.0) //start account balance
+    , balance(1000.0) //initial values
     , allocatedFunds(0.0)
     , freeFunds(balance)
     , currentWeekday(QDate::currentDate().dayOfWeek())
@@ -51,6 +52,12 @@ StartMenu::StartMenu(QWidget *parent)
     historyWidget->addWidget(historyWidgetObject);
     historyWidget->setVisible(false);
 
+    //details of instruments subpage
+    QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
+    details* detailsWidgetObject = new details();
+    detailsWidget->addWidget(detailsWidgetObject);
+    detailsWidget->setVisible(false);
+
     //subpage tradinginstruments
     QStackedWidget* tradingInstrumentsWidget = findChild<QStackedWidget*>("tradingInstrumentsWidget");
     TradingInstruments* tradingInstrumentsObject = new TradingInstruments();
@@ -64,9 +71,10 @@ StartMenu::StartMenu(QWidget *parent)
     portfolioWidget->addWidget(portfolioObject);
     portfolioWidget->setVisible(false);
 
-    connect(ui->historyButton, &QPushButton::clicked, [this, historyWidget, historyWidgetObject, tradingInstrumentsWidget, portfolioWidget]() {
+    connect(ui->historyButton, &QPushButton::clicked, [this, historyWidget, historyWidgetObject, tradingInstrumentsWidget, portfolioWidget, detailsWidget]() {
         tradingInstrumentsWidget->setVisible(false);
         portfolioWidget->setVisible(false);
+        detailsWidget->setVisible(false);
         historyWidget->setVisible(true);
         ui->instrumentsButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         ui->historyButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
@@ -74,9 +82,10 @@ StartMenu::StartMenu(QWidget *parent)
         historyWidget->setCurrentWidget(historyWidgetObject);
     });
 
-    connect(ui->instrumentsButton, &QPushButton::clicked, [this, tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget, portfolioWidget]() {
+    connect(ui->instrumentsButton, &QPushButton::clicked, [this, tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget, portfolioWidget, detailsWidget]() {
         historyWidget->setVisible(false);
         portfolioWidget->setVisible(false);
+        detailsWidget->setVisible(false);
         tradingInstrumentsWidget->setVisible(true);
         ui->instrumentsButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
         ui->historyButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
@@ -84,15 +93,26 @@ StartMenu::StartMenu(QWidget *parent)
         tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject);
     });
 
-    connect(ui->portfolioButton, &QPushButton::clicked, [this, portfolioWidget, portfolioObject, tradingInstrumentsWidget, historyWidget]() {
+    connect(ui->portfolioButton, &QPushButton::clicked, [this, portfolioWidget, portfolioObject, tradingInstrumentsWidget, historyWidget, detailsWidget]() {
         historyWidget->setVisible(false);
         portfolioWidget->setVisible(true);
         tradingInstrumentsWidget->setVisible(false);
+        detailsWidget->setVisible(false);
         ui->instrumentsButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         ui->historyButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         ui->portfolioButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
         portfolioWidget->setCurrentWidget(portfolioObject);
     });
+
+    connect(tradingInstrumentsObject, &TradingInstruments::instrumentSelected,
+            [this, portfolioWidget, detailsWidget, tradingInstrumentsWidget, historyWidget, detailsWidgetObject](const QString &instrumentName) {
+                // Adjust visibility of widgets as needed
+                portfolioWidget->setVisible(false);
+                tradingInstrumentsWidget->setVisible(false);
+                historyWidget->setVisible(false);
+                detailsWidget->setVisible(true);
+                showDetailsWidget(instrumentName);
+            });
 
     connect(ui->depositButton, &QPushButton::clicked, this, &StartMenu::showDepositDialog);
     connect(ui->withdrawalButton, &QPushButton::clicked, this, &StartMenu::showWithdrawalDialog);
@@ -110,15 +130,40 @@ StartMenu::~StartMenu()
     delete timer;
 }
 
+// This function should correctly handle showing the detailsWidget
+void StartMenu::showDetailsWidget(const QString &instrumentName) {
+    QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
+    details* detailsWidgetObject = findChild<details*>(); // Make sure this retrieves the correct widget
+
+    if (!detailsWidget || !detailsWidgetObject) {
+        qDebug() << "Details widget or object not found or not properly initialized";
+        return;
+    }
+
+    detailsWidget->setCurrentWidget(detailsWidgetObject); // Set the current widget to detailsWidgetObject
+    detailsWidgetObject->updateDetails(instrumentName.toUpper()); // Assuming updateDetails expects uppercase
+    detailsWidget->setVisible(true); // Ensure the entire stack is visible
+}
+
+
+void StartMenu::showDetails(const QString &instrumentName) {
+    QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
+    details* detailsWidgetObject = new details();
+    detailsWidgetObject->updateDetails(instrumentName); // Assuming Details class has this method
+    ui->detailsWidget->setCurrentWidget(detailsWidget);
+    detailsWidget->setVisible(true);
+    qDebug() << qPrintable(instrumentName);
+}
+
 void StartMenu::updateDateTime() {
     QDateTime dateTime = QDateTime::currentDateTime();
-    QString dateTimeText = dateTime.toString("hh:mm:ss dd:MM:yyyy");
+    QString dateTimeText = dateTime.toString("hh:mm:ss dd.MM.yyyy");
     ui->dateTimeLabel->setText(dateTimeText);
 }
 
 void StartMenu::updateRefreshButton() {
     QDateTime now = QDateTime::currentDateTime();
-    QString dateTimeText = now.toString("hh:mm:ss dd:MM:yyyy");
+    QString dateTimeText = now.toString("hh:mm:ss dd.MM.yyyy");
     ui->refreshValue->setText(dateTimeText);
 }
 
@@ -224,8 +269,7 @@ void StartMenu::loadSettingsfromCSV() {
         freeFunds = fields[2].toDouble();
         allocatedFunds = fields[3].toDouble();
 
-        // Update the UI or any other necessary fields
-        ui->refreshValue->setText(lastRefresh.toString("hh:mm:ss dd:MM:yyyy"));
+        ui->refreshValue->setText(lastRefresh.toString("hh:mm:ss dd.MM.yyyy"));
         updateBalanceDisplay();
         updateFreeFundsDisplay();
         updateAllocatedFundsDisplay();

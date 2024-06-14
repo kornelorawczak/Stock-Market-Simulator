@@ -556,6 +556,18 @@ QWidget#mainWin {
     <widget class="QWidget" name="page_5"/>
     <widget class="QWidget" name="page_6"/>
    </widget>
+   <widget class="QStackedWidget" name="detailsWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page_7"/>
+    <widget class="QWidget" name="page_8"/>
+   </widget>
   </widget>
  </widget>
  <resources/>
