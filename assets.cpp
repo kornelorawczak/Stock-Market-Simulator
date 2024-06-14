@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ctime>
 #include <nlohmann/json.hpp>
+#include <cmath>
 
 
 using namespace std;
@@ -21,6 +22,45 @@ public:
     virtual double getValue() const = 0;
     virtual double difference() = 0;
     virtual double* monthly() = 0;
+    virtual double getMA() = 0;
+    virtual double getVolatility() = 0;
+    virtual double getMACD() = 0;
+};
+
+class MovingAverage {
+public:
+    static double calculate(const double* prices, int days){
+        double sum = 0.0;
+        for (int i = 0; i < days; i++){
+            sum += prices[i];
+        }
+        return sum / days;
+    }
+};
+
+class Volatility {
+public:
+    static double calculate(const double* prices, int days) {
+        double sum = 0.0, mean, variance = 0.0;
+        for (int i = 0; i < days; ++i) {
+            sum += prices[i];
+        }
+        mean = sum / days;
+        for (int i = 0; i < days; ++i) {
+            variance += pow(prices[i] - mean, 2);
+        }
+        variance /= days;
+        return sqrt(variance);
+    }
+};
+
+class MACD {
+public:
+    static double calculate(const double* prices, int daysShort, int daysLong) {
+        double shortMA = MovingAverage::calculate(prices, daysShort);
+        double longMA = MovingAverage::calculate(prices, daysLong);
+        return shortMA - longMA;
+    }
 };
 
 class CryptoApi : public Data {
@@ -29,6 +69,8 @@ private:
     string id;
     double currentValue = 0.0;
     string baseUrl;
+    double prices[30];
+    bool done = false;
     void parseData(const string& jsonData, double& rate, int type) override {
         auto json = json::parse(jsonData);
         //cout << json << endl;
@@ -80,14 +122,26 @@ public:
     }
 
     double* monthly() override {
-        static double prices[30];
         for (int i = 0; i < 30; ++i) {
             prices[i] = getPastValue(i);
         }
+        done = true;
         return prices;
     }
     string getName() const override {
         return id;
+    }
+    double getMA() override {
+        if (!done) monthly();
+        return MovingAverage::calculate(prices, 30);
+    }
+    double getVolatility() override {
+        if (!done) monthly();
+        return Volatility::calculate(prices, 30);
+    }
+    double getMACD() override {
+        if (!done) monthly();
+        return MACD::calculate(prices, 12, 26);
     }
 };
 
@@ -97,7 +151,8 @@ protected:
     string host;
     string path;
     double current_price;
-    double monthly_rates[30];
+    double prices[30];
+    bool done = false;
     string generateDate(int days) override {
         auto now = chrono::system_clock::now();
         auto past = now - chrono::hours(24 * days);
@@ -135,12 +190,12 @@ public:
     }
 
     double* monthly() override {
-        monthly_rates[0] = getValue();
+        prices[0] = getValue();
         int i = 1;
         int j = 1;
         while(i < 30){
             try {
-                monthly_rates[i] = getPastValue(j);
+                prices[i] = getPastValue(j);
                 i++;
                 j++;
             }
@@ -149,9 +204,22 @@ public:
                 continue;
             }
         }
-        return monthly_rates;
+        done = true;
+        return prices;
     }
     string getName() const override = 0;
+    double getMA() override {
+        if (!done) monthly();
+        return MovingAverage::calculate(prices, 30);
+    }
+    double getVolatility() override {
+        if (!done) monthly();
+        return Volatility::calculate(prices, 30);
+    }
+    double getMACD() override {
+        if (!done) monthly();
+        return MACD::calculate(prices, 12, 26);
+    }
 };
 
 
@@ -316,13 +384,20 @@ int main() {
     auto btc = CryptoApi("BTC");
     btc.refreshData();
     cout << btc.getValue() << endl;
+    cout << btc.getMA() << endl;
+    cout << btc.getVolatility() << endl;
+    cout << btc.getMACD() << endl;
+    auto gold = Gold();
+    cout << gold.getMA() << endl;
+    cout << gold.getVolatility() << endl;
+    cout << gold.getMACD() << endl;
     /*cout << btc.difference() << endl;
     double* chart_data = btc.monthly();
     for (int i = 0; i < 30; i++){
         cout << "Day " << (-1) * i << ": " << chart_data[i] << endl;
     }
      */
-    Serializer::performAction(btc, 20);
-    Serializer::performAction(btc, -10);
+    //Serializer::performAction(btc, 20);
+    //Serializer::performAction(btc, -10);
     return 0;
 }
