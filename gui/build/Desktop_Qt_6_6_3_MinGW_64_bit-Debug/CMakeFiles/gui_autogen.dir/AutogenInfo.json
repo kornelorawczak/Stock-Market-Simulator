@@ -328,6 +328,12 @@
 	"HEADERS" : 
 	[
 		[
+			"C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/chart.h",
+			"MU",
+			"EWIEGA46WW/moc_chart.cpp",
+			null
+		],
+		[
 			"C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/deposit.h",
 			"MU",
 			"EWIEGA46WW/moc_deposit.cpp",
@@ -376,9 +382,12 @@
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
+		"QT_CHARTS_LIB",
 		"QT_CORE_LIB",
 		"QT_GUI_LIB",
 		"QT_NEEDS_QMAIN",
+		"QT_OPENGLWIDGETS_LIB",
+		"QT_OPENGL_LIB",
 		"QT_WIDGETS_LIB",
 		"UNICODE",
 		"WIN32",
@@ -401,6 +410,9 @@
 		"C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++",
 		"C:/Qt/6.6.3/mingw_64/include/QtWidgets",
 		"C:/Qt/6.6.3/mingw_64/include/QtGui",
+		"C:/Qt/6.6.3/mingw_64/include/QtCharts",
+		"C:/Qt/6.6.3/mingw_64/include/QtOpenGL",
+		"C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets",
 		"C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++",
 		"C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32",
 		"C:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward",
@@ -440,6 +452,11 @@
 	"SETTINGS_FILE" : "C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/CMakeFiles/gui_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/chart.cpp",
+			"MU",
+			null
+		],
 		[
 			"C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/deposit.cpp",
 			"MU",

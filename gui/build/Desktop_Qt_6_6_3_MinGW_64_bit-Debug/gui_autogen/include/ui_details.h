@@ -30,7 +30,7 @@ public:
     QLabel *priceLabel;
     QLabel *label;
     QLabel *price;
-    QWidget *chartLayout;
+    QWidget *chartWidget;
 
     void setupUi(QDialog *details)
     {
@@ -83,9 +83,9 @@ public:
         price->setStyleSheet(QString::fromUtf8("QLabel#price {\n"
 "	font-size: 20px\n"
 "}"));
-        chartLayout = new QWidget(details);
-        chartLayout->setObjectName("chartLayout");
-        chartLayout->setGeometry(QRect(60, 150, 811, 301));
+        chartWidget = new QWidget(details);
+        chartWidget->setObjectName("chartWidget");
+        chartWidget->setGeometry(QRect(70, 140, 781, 291));
 
         retranslateUi(details);
 

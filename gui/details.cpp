@@ -1,5 +1,10 @@
 #include "details.h"
 #include "ui_details.h"
+#include <QtCharts/QChartView>
+#include <QtCharts/QChart>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QVBoxLayout>
 
 details::details(QWidget *parent)
     : QDialog(parent)
@@ -14,6 +19,33 @@ details::details(QWidget *parent)
     QFont font2 = ui->textEdit_2->font();
     font2.setPointSize(16);
     ui->textEdit_2->setFont(font2);
+
+    // QLineSeries *series = new QLineSeries();
+    // series->append(0, 3);
+    // series->append(5, 3);
+    // series->append(1, 8);
+    // series->append(2, 5);
+    // series->append(6, 12);
+    // series->append(4, 9);
+    // series->append(9, 13);
+    // series->append(4, 3);
+    // series->append(2, 7);
+
+    // QChart *chart = new QChart();
+    // chart->legend()->hide();
+    // chart->addSeries(series);
+    // chart->createDefaultAxes();
+    // chart->axes(Qt::Vertical).first()->setRange(0, 20);
+    // chart->axes(Qt::Horizontal).first()->setRange(0, 12);
+    // chart->setVisible(true);
+
+    // QChartView *chartview = new QChartView(chart);
+    // chartview->setRenderHint(QPainter::Antialiasing);
+    // chartview->setVisible(true);
+
+    // QVBoxLayout *layout = new QVBoxLayout();
+    // layout->addWidget(chartview);
+    // ui->chartWidget->setLayout(layout);
 }
 
 details::~details()
@@ -48,29 +80,84 @@ void details::updateDetails(const QString &instrumentName) {
         QCoreApplication::exit(1);
     }
 
-    loadDataFromFile("C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/records.csv");
     file.close();
+
+    loadChartData("C:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/records.csv");
 }
 
-void details::loadDataFromFile(const QString &filePath) {
-    QFile file(filePath);
+#include <QtCharts/QValueAxis>
+
+void details::loadChartData(const QString &chartFilePath) {
+    QFile file(chartFilePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Unable to open the file:" << filePath;
+        QMessageBox::critical(this, "Error", "Unable to open the file: " + chartFilePath);
         return;
     }
 
-    QVector<double> values;
     QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        values.append(line.toDouble());
+    QLineSeries *series = new QLineSeries();
+    QStringList values;
+
+    double maxValue = 0;  // To track the maximum y-value
+    double minValue = std::numeric_limits<double>::max(); // Start with the largest possible double
+
+    // Read the single line containing all values
+    if (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+        values = line.split(',');
+
+        // Convert each value to double, add to series, and update max and min values
+        for (int i = 0; i < values.size(); ++i) {
+            double y = values.at(i).toDouble();
+            series->append(i, y);
+            if (y > maxValue) {
+                maxValue = y;  // Update the maximum value found
+            }
+            if (y < minValue) {
+                minValue = y;  // Update the minimum value found
+            }
+        }
     }
 
     file.close();
 
-    createChart(values);
-}
+    QChart *chart = new QChart();
+    chart->legend()->hide();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTitle("Price Chart");
 
-void details::createChart(const QVector<double> &values) {
+    // Apply the dark theme
+    chart->setTheme(QChart::ChartThemeDark);
 
+    // Set series color to light blue
+    series->setColor(QColor("#ADD8E6"));
+
+    // Scale the y-axis from the minimum value found to 105% of the maximum value
+    auto yAxis = new QValueAxis();
+    yAxis->setRange(minValue, maxValue * 1.05);
+    chart->setAxisY(yAxis, series);
+
+    auto xAxis = new QValueAxis();
+    xAxis->setRange(0, values.size() - 1);
+    xAxis->setTickInterval(1); // Ensures tick marks at every integer
+    xAxis->setLabelFormat("%d"); // Format labels as integers
+    xAxis->setTitleText("Days");
+    chart->setAxisX(xAxis, series);
+
+    // Check if a chart view already exists
+    if (ui->chartWidget->layout() && ui->chartWidget->layout()->count() > 0) {
+        QLayoutItem *child;
+        while ((child = ui->chartWidget->layout()->takeAt(0)) != nullptr) {
+            delete child->widget(); // safely delete the widget
+            delete child; // delete the layout item
+        }
+    } else {
+        QVBoxLayout *layout = new QVBoxLayout(); // Create layout if it doesn't exist
+        ui->chartWidget->setLayout(layout);
+    }
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    ui->chartWidget->layout()->addWidget(chartView);
 }

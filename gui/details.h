@@ -6,10 +6,7 @@
 #include <QFile>
 #include <QFont>
 #include <QMessageBox>
-#include <QtCharts/QtCharts>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QWidget>
+#include <QStackedWidget>
 
 namespace Ui {
 class details;
@@ -24,10 +21,10 @@ public:
     ~details();
 
     void updateDetails(const QString &instrumentName);
-    void loadDataFromFile(const QString &filePath);
+
 private:
     Ui::details *ui;
-    void createChart(const QVector<double> &values);
+    void loadChartData(const QString &chartFilePath);
 };
 
 #endif // DETAILS_H

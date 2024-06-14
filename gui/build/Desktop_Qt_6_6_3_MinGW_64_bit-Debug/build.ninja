@@ -50,74 +50,82 @@ cmake_ninja_workdir = C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market
 build cmake_object_order_depends_target_gui: phony || gui_autogen gui_autogen/mocs_compilation.cpp gui_autogen/timestamp gui_autogen_timestamp_deps
 
 build CMakeFiles/gui.dir/gui_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\gui_autogen\mocs_compilation.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir\gui_autogen
 
 build CMakeFiles/gui.dir/main.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/main.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\main.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/startmenu.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/startmenu.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\startmenu.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/deposit.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/deposit.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\deposit.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/withdrawal.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/withdrawal.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\withdrawal.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/history.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/history.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\history.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/tradinginstruments.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/tradinginstruments.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\tradinginstruments.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/portfolio.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/portfolio.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\portfolio.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
 build CMakeFiles/gui.dir/details.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/details.cpp || cmake_object_order_depends_target_gui
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\gui.dir\details.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
+  OBJECT_DIR = CMakeFiles\gui.dir
+  OBJECT_FILE_DIR = CMakeFiles\gui.dir
+
+build CMakeFiles/gui.dir/chart.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/chart.cpp || cmake_object_order_depends_target_gui
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CHARTS_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_OPENGLWIDGETS_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\gui.dir\chart.cpp.obj.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/G4M3R/Desktop/UWR/obiektowe/projekt/Stock-Market-Simulator/gui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug/gui_autogen/include -isystem C:/Qt/6.6.3/mingw_64/include/QtCore -isystem C:/Qt/6.6.3/mingw_64/include -isystem C:/Qt/6.6.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.6.3/mingw_64/include/QtWidgets -isystem C:/Qt/6.6.3/mingw_64/include/QtGui -isystem C:/Qt/6.6.3/mingw_64/include/QtCharts -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGL -isystem C:/Qt/6.6.3/mingw_64/include/QtOpenGLWidgets
   OBJECT_DIR = CMakeFiles\gui.dir
   OBJECT_FILE_DIR = CMakeFiles\gui.dir
 
@@ -129,10 +137,10 @@ build CMakeFiles/gui.dir/details.cpp.obj: CXX_COMPILER__gui_unscanned_Debug C$:/
 #############################################
 # Link the executable gui.exe
 
-build gui.exe: CXX_EXECUTABLE_LINKER__gui_Debug CMakeFiles/gui.dir/gui_autogen/mocs_compilation.cpp.obj CMakeFiles/gui.dir/main.cpp.obj CMakeFiles/gui.dir/startmenu.cpp.obj CMakeFiles/gui.dir/deposit.cpp.obj CMakeFiles/gui.dir/withdrawal.cpp.obj CMakeFiles/gui.dir/history.cpp.obj CMakeFiles/gui.dir/tradinginstruments.cpp.obj CMakeFiles/gui.dir/portfolio.cpp.obj CMakeFiles/gui.dir/details.cpp.obj | C$:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Gui.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Core.a C$:/Qt/6.6.3/mingw_64/lib/libQt6EntryPoint.a || gui_autogen gui_autogen_timestamp_deps
+build gui.exe: CXX_EXECUTABLE_LINKER__gui_Debug CMakeFiles/gui.dir/gui_autogen/mocs_compilation.cpp.obj CMakeFiles/gui.dir/main.cpp.obj CMakeFiles/gui.dir/startmenu.cpp.obj CMakeFiles/gui.dir/deposit.cpp.obj CMakeFiles/gui.dir/withdrawal.cpp.obj CMakeFiles/gui.dir/history.cpp.obj CMakeFiles/gui.dir/tradinginstruments.cpp.obj CMakeFiles/gui.dir/portfolio.cpp.obj CMakeFiles/gui.dir/details.cpp.obj CMakeFiles/gui.dir/chart.cpp.obj | C$:/Qt/6.6.3/mingw_64/lib/libQt6Charts.a C$:/Qt/6.6.3/mingw_64/lib/libQt6OpenGLWidgets.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.6.3/mingw_64/lib/libQt6OpenGL.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Gui.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Core.a C$:/Qt/6.6.3/mingw_64/lib/libQt6EntryPoint.a || gui_autogen gui_autogen_timestamp_deps
   FLAGS = -DQT_QML_DEBUG -g
   LINK_FLAGS = -mwindows
-  LINK_LIBRARIES = C:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.6.3/mingw_64/lib/libQt6Gui.a  C:/Qt/6.6.3/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.6.3/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = C:/Qt/6.6.3/mingw_64/lib/libQt6Charts.a  C:/Qt/6.6.3/mingw_64/lib/libQt6OpenGLWidgets.a  C:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.6.3/mingw_64/lib/libQt6OpenGL.a  C:/Qt/6.6.3/mingw_64/lib/libQt6Gui.a  C:/Qt/6.6.3/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.6.3/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -luser32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\gui.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -216,7 +224,7 @@ build gui_autogen_timestamp_deps: phony CMakeFiles/gui_autogen_timestamp_deps
 #############################################
 # Utility command for gui_autogen
 
-build gui_autogen: phony CMakeFiles/gui_autogen gui_autogen/include/ui_startmenu.h gui_autogen/include/ui_deposit.h gui_autogen/include/ui_withdrawal.h gui_autogen/include/ui_history.h gui_autogen/include/ui_tradinginstruments.h gui_autogen/include/ui_portfolio.h gui_autogen/include/ui_details.h gui_autogen/timestamp gui_autogen/mocs_compilation.cpp gui_autogen_timestamp_deps
+build gui_autogen: phony CMakeFiles/gui_autogen gui_autogen/include/ui_startmenu.h gui_autogen/include/ui_deposit.h gui_autogen/include/ui_withdrawal.h gui_autogen/include/ui_history.h gui_autogen/include/ui_tradinginstruments.h gui_autogen/include/ui_portfolio.h gui_autogen/include/ui_details.h gui_autogen/include/ui_chart.h gui_autogen/timestamp gui_autogen/mocs_compilation.cpp gui_autogen_timestamp_deps
 
 
 #############################################
@@ -232,13 +240,13 @@ build gui_autogen/timestamp gui_autogen/mocs_compilation.cpp | ${cmake_ninja_wor
 #############################################
 # Phony custom command for CMakeFiles\gui_autogen_timestamp_deps
 
-build CMakeFiles/gui_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/gui_autogen_timestamp_deps: phony C$:/Qt/6.6.3/mingw_64/./bin/moc.exe C$:/Qt/6.6.3/mingw_64/./bin/uic.exe C$:/Qt/6.6.3/mingw_64/lib/libQt6Core.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a
+build CMakeFiles/gui_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/gui_autogen_timestamp_deps: phony C$:/Qt/6.6.3/mingw_64/./bin/moc.exe C$:/Qt/6.6.3/mingw_64/./bin/uic.exe C$:/Qt/6.6.3/mingw_64/lib/libQt6Charts.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.6.3/mingw_64/lib/libQt6Core.a
 
 
 #############################################
 # Phony custom command for CMakeFiles\gui_autogen
 
-build CMakeFiles/gui_autogen gui_autogen/include/ui_startmenu.h gui_autogen/include/ui_deposit.h gui_autogen/include/ui_withdrawal.h gui_autogen/include/ui_history.h gui_autogen/include/ui_tradinginstruments.h gui_autogen/include/ui_portfolio.h gui_autogen/include/ui_details.h | ${cmake_ninja_workdir}CMakeFiles/gui_autogen ${cmake_ninja_workdir}gui_autogen/include/ui_startmenu.h ${cmake_ninja_workdir}gui_autogen/include/ui_deposit.h ${cmake_ninja_workdir}gui_autogen/include/ui_withdrawal.h ${cmake_ninja_workdir}gui_autogen/include/ui_history.h ${cmake_ninja_workdir}gui_autogen/include/ui_tradinginstruments.h ${cmake_ninja_workdir}gui_autogen/include/ui_portfolio.h ${cmake_ninja_workdir}gui_autogen/include/ui_details.h: phony gui_autogen/timestamp || gui_autogen_timestamp_deps
+build CMakeFiles/gui_autogen gui_autogen/include/ui_startmenu.h gui_autogen/include/ui_deposit.h gui_autogen/include/ui_withdrawal.h gui_autogen/include/ui_history.h gui_autogen/include/ui_tradinginstruments.h gui_autogen/include/ui_portfolio.h gui_autogen/include/ui_details.h gui_autogen/include/ui_chart.h | ${cmake_ninja_workdir}CMakeFiles/gui_autogen ${cmake_ninja_workdir}gui_autogen/include/ui_startmenu.h ${cmake_ninja_workdir}gui_autogen/include/ui_deposit.h ${cmake_ninja_workdir}gui_autogen/include/ui_withdrawal.h ${cmake_ninja_workdir}gui_autogen/include/ui_history.h ${cmake_ninja_workdir}gui_autogen/include/ui_tradinginstruments.h ${cmake_ninja_workdir}gui_autogen/include/ui_portfolio.h ${cmake_ninja_workdir}gui_autogen/include/ui_details.h ${cmake_ninja_workdir}gui_autogen/include/ui_chart.h: phony gui_autogen/timestamp || gui_autogen_timestamp_deps
 
 # =============================================================================
 # Target aliases.

@@ -149,13 +149,13 @@
     <string>PRICE</string>
    </property>
   </widget>
-  <widget class="QWidget" name="chartLayout" native="true">
+  <widget class="QWidget" name="chartWidget" native="true">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>150</y>
-     <width>811</width>
-     <height>301</height>
+     <x>70</x>
+     <y>140</y>
+     <width>781</width>
+     <height>291</height>
     </rect>
    </property>
   </widget>
