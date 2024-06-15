@@ -49,9 +49,25 @@ cmake_ninja_workdir = /Users/kornelorawczak/Documents/studia/sem2/programowanieO
 
 build cmake_object_order_depends_target_Stock_Market_Simulator: phony || CMakeFiles/Stock_Market_Simulator.dir
 
-build CMakeFiles/Stock_Market_Simulator.dir/assets.cpp.o: CXX_COMPILER__Stock_Market_Simulator_unscanned_Debug /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/assets.cpp || cmake_object_order_depends_target_Stock_Market_Simulator
+build CMakeFiles/Stock_Market_Simulator.dir/test.cpp.o: CXX_COMPILER__Stock_Market_Simulator_unscanned_Debug /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/test.cpp || cmake_object_order_depends_target_Stock_Market_Simulator
   DEFINES = -DCPPHTTPLIB_BROTLI_SUPPORT -DCPPHTTPLIB_OPENSSL_SUPPORT -DCPPHTTPLIB_USE_CERTS_FROM_MACOSX_KEYCHAIN -DCPPHTTPLIB_ZLIB_SUPPORT
-  DEP_FILE = CMakeFiles/Stock_Market_Simulator.dir/assets.cpp.o.d
+  DEP_FILE = CMakeFiles/Stock_Market_Simulator.dir/test.cpp.o.d
+  FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
+  INCLUDES = -I/Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/json/include -isystem /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/cpp-httplib -isystem /usr/local/Cellar/brotli/1.1.0/include -isystem /usr/local/Cellar/openssl@3/3.3.0/include
+  OBJECT_DIR = CMakeFiles/Stock_Market_Simulator.dir
+  OBJECT_FILE_DIR = CMakeFiles/Stock_Market_Simulator.dir
+
+build CMakeFiles/Stock_Market_Simulator.dir/serializer.cpp.o: CXX_COMPILER__Stock_Market_Simulator_unscanned_Debug /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/serializer.cpp || cmake_object_order_depends_target_Stock_Market_Simulator
+  DEFINES = -DCPPHTTPLIB_BROTLI_SUPPORT -DCPPHTTPLIB_OPENSSL_SUPPORT -DCPPHTTPLIB_USE_CERTS_FROM_MACOSX_KEYCHAIN -DCPPHTTPLIB_ZLIB_SUPPORT
+  DEP_FILE = CMakeFiles/Stock_Market_Simulator.dir/serializer.cpp.o.d
+  FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
+  INCLUDES = -I/Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/json/include -isystem /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/cpp-httplib -isystem /usr/local/Cellar/brotli/1.1.0/include -isystem /usr/local/Cellar/openssl@3/3.3.0/include
+  OBJECT_DIR = CMakeFiles/Stock_Market_Simulator.dir
+  OBJECT_FILE_DIR = CMakeFiles/Stock_Market_Simulator.dir
+
+build CMakeFiles/Stock_Market_Simulator.dir/data.cpp.o: CXX_COMPILER__Stock_Market_Simulator_unscanned_Debug /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/data.cpp || cmake_object_order_depends_target_Stock_Market_Simulator
+  DEFINES = -DCPPHTTPLIB_BROTLI_SUPPORT -DCPPHTTPLIB_OPENSSL_SUPPORT -DCPPHTTPLIB_USE_CERTS_FROM_MACOSX_KEYCHAIN -DCPPHTTPLIB_ZLIB_SUPPORT
+  DEP_FILE = CMakeFiles/Stock_Market_Simulator.dir/data.cpp.o.d
   FLAGS = -g -std=gnu++17 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7 -fcolor-diagnostics
   INCLUDES = -I/Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/json/include -isystem /Users/kornelorawczak/Documents/studia/sem2/programowanieObiektowe/projekt_repo/Stock-Market-Simulator/cpp-httplib -isystem /usr/local/Cellar/brotli/1.1.0/include -isystem /usr/local/Cellar/openssl@3/3.3.0/include
   OBJECT_DIR = CMakeFiles/Stock_Market_Simulator.dir
@@ -65,7 +81,7 @@ build CMakeFiles/Stock_Market_Simulator.dir/assets.cpp.o: CXX_COMPILER__Stock_Ma
 #############################################
 # Link the executable Stock_Market_Simulator
 
-build Stock_Market_Simulator: CXX_EXECUTABLE_LINKER__Stock_Market_Simulator_Debug CMakeFiles/Stock_Market_Simulator.dir/assets.cpp.o | /usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.dylib /usr/local/Cellar/brotli/1.1.0/lib/libbrotlienc.dylib /usr/local/Cellar/brotli/1.1.0/lib/libbrotlidec.dylib /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk/usr/lib/libz.tbd /usr/local/Cellar/openssl@3/3.3.0/lib/libssl.dylib /usr/local/Cellar/openssl@3/3.3.0/lib/libcrypto.dylib
+build Stock_Market_Simulator: CXX_EXECUTABLE_LINKER__Stock_Market_Simulator_Debug CMakeFiles/Stock_Market_Simulator.dir/test.cpp.o CMakeFiles/Stock_Market_Simulator.dir/serializer.cpp.o CMakeFiles/Stock_Market_Simulator.dir/data.cpp.o | /usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.dylib /usr/local/Cellar/brotli/1.1.0/lib/libbrotlienc.dylib /usr/local/Cellar/brotli/1.1.0/lib/libbrotlidec.dylib /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk/usr/lib/libz.tbd /usr/local/Cellar/openssl@3/3.3.0/lib/libssl.dylib /usr/local/Cellar/openssl@3/3.3.0/lib/libcrypto.dylib
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.7
   LINK_LIBRARIES = -framework CoreFoundation -framework Security  /usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.dylib  /usr/local/Cellar/brotli/1.1.0/lib/libbrotlienc.dylib  /usr/local/Cellar/brotli/1.1.0/lib/libbrotlidec.dylib  /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk/usr/lib/libz.tbd  /usr/local/Cellar/openssl@3/3.3.0/lib/libssl.dylib  /usr/local/Cellar/openssl@3/3.3.0/lib/libcrypto.dylib
   OBJECT_DIR = CMakeFiles/Stock_Market_Simulator.dir
