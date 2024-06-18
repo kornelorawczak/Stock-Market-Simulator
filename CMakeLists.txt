@@ -9,8 +9,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_PREFIX_PATH  "[C:/Qt/6.6.3/msvc2019_64/lib/cmake/Qt6]")
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Charts)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Charts)
+
+add_subdirectory(httplib)
+add_subdirectory(json2)
 
 set(PROJECT_SOURCES
     main.cpp
@@ -23,6 +27,8 @@ set(PROJECT_SOURCES
     tradinginstruments.h tradinginstruments.cpp tradinginstruments.ui
     portfolio.h portfolio.cpp portfolio.ui
     details.h details.cpp details.ui
+    serializer.cpp serializer.hpp
+    data.cpp data.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -49,7 +55,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(StockSimGui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::Charts)
+target_link_libraries(StockSimGui PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::Charts httplib nlohmann_json)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
