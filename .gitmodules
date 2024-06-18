@@ -4,3 +4,9 @@
 [submodule "json"]
 	path = json
 	url = https://github.com/nlohmann/json.git
+[submodule "api-tech/cpp-httplib"]
+	path = api-tech/cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib.git
+[submodule "api-tech/json"]
+	path = api-tech/json
+	url = https://github.com/nlohmann/json.git
