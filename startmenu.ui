@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StartMenu</class>
+ <widget class="QMainWindow" name="StartMenu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>593</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Stock Simulator</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="QWidget" name="mainWin">
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(0, 0, 0);
+QWidget#mainWin {
+    border: 2px solid rgb(255, 225, 255);
+}</string>
+   </property>
+   <widget class="QFrame" name="funds">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>0</y>
+      <width>321</width>
+      <height>110</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#funds {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="fundsLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#fundsLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Free Funds:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="AllocatedFundsLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#AllocatedFundsLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Allocated Funds:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="allocatedFundsValue">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>24</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="freeFundsValue">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>58</y>
+       <width>171</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="instrumentsFrame">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>0</y>
+      <width>317</width>
+      <height>110</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>951</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#instrumentsFrame {
+    border: 2px solid rgb(73, 225, 255);
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="instrumentsButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>30</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#instrumentsButton {
+	border: none;
+	font-size: 24px;
+}</string>
+     </property>
+     <property name="text">
+      <string>trading instruments</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="balance">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>0</y>
+      <width>317</width>
+      <height>110</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#balance {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="balanceLabel">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>30</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#balanceLabel {
+	font-size: 24px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Balance:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="changeLabel">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>60</y>
+       <width>45</width>
+       <height>15</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>24hchg</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="balanceValue">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>40</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="information">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>261</width>
+      <height>110</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#information {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="dateLabel">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>10</y>
+       <width>51</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#dateLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Date: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="refreshLabel">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>43</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#refreshLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Refreshed:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="marketStatusLabel">
+     <property name="geometry">
+      <rect>
+       <x>26</x>
+       <y>70</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#marketStatusLabel {
+	font-size: 18px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Markets: </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dateTimeLabel">
+     <property name="geometry">
+      <rect>
+       <x>76</x>
+       <y>19</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#dateTimeLabel {
+	font-size: 16px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="marketStatusValue">
+     <property name="geometry">
+      <rect>
+       <x>101</x>
+       <y>69</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="refreshValue">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>39</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="portfolio">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>109</y>
+      <width>261</width>
+      <height>122</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#portfolio {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="portfolioButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#portfolioButton {
+	border: none;
+	font-size: 20px;
+}</string>
+     </property>
+     <property name="text">
+      <string>portfolio</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="history">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>230</y>
+      <width>261</width>
+      <height>123</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#history {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="historyButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#historyButton {
+	border: none;
+	font-size: 20px;
+}</string>
+     </property>
+     <property name="text">
+      <string>history</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="deposit">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>350</y>
+      <width>261</width>
+      <height>122</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#deposit {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="depositButton">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>80</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#depositButton {
+	border: none;
+	font-size: 20px;
+}</string>
+     </property>
+     <property name="text">
+      <string>deposit</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="withdrawal">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>470</y>
+      <width>261</width>
+      <height>123</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame#withdrawal {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QPushButton" name="withdrawalButton">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>50</y>
+       <width>111</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton#withdrawalButton {
+	border: none;
+	font-size: 20px;
+}</string>
+     </property>
+     <property name="text">
+      <string>withdrawal</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QStackedWidget" name="historyWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QStackedWidget#historyWidget {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="QStackedWidget" name="tradingInstrumentsWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QStackedWidget#tradingInstrumentsWidget {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="page_3"/>
+    <widget class="QWidget" name="page_4"/>
+   </widget>
+   <widget class="QStackedWidget" name="portfolioWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QStackedWidget#portfolioWidget {
+	border: 2px solid rgb(131, 226, 255)
+}</string>
+    </property>
+    <widget class="QWidget" name="page_5"/>
+    <widget class="QWidget" name="page_6"/>
+   </widget>
+   <widget class="QStackedWidget" name="detailsWidget">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>109</y>
+      <width>940</width>
+      <height>484</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page_7"/>
+    <widget class="QWidget" name="page_8"/>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
