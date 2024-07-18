@@ -6,18 +6,23 @@
 #include "tradinginstruments.h"
 #include "portfolio.h"
 #include "details.h"
+#include "data.h"
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 
 StartMenu::StartMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartMenu)
-    , balance(1000.0) //initial values
+    , balance(0.0)
     , allocatedFunds(0.0)
-    , freeFunds(balance)
+    , freeFunds(0.0)
     , currentWeekday(QDate::currentDate().dayOfWeek())
 {
     ui->setupUi(this);
 
     loadSettingsfromCSV();
+    loadBalancefromCSV();
 
     updateBalanceDisplay();
     updateAllocatedFundsDisplay();
@@ -28,7 +33,6 @@ StartMenu::StartMenu(QWidget *parent)
 
     ui->refreshValue->setVisible(true);
 
-    //timer setup for date and time
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &StartMenu::updateDateTime);
     timer->start(1000);
@@ -46,30 +50,31 @@ StartMenu::StartMenu(QWidget *parent)
     }
     ui->marketStatusValue->setText(marketStatus);
 
-    //subpage history
     QStackedWidget* historyWidget = findChild<QStackedWidget*>("historyWidget");
     History* historyWidgetObject = new History();
     historyWidget->addWidget(historyWidgetObject);
     historyWidget->setVisible(false);
 
-    //details of instruments subpage
     QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
     details* detailsWidgetObject = new details();
     detailsWidget->addWidget(detailsWidgetObject);
     detailsWidget->setVisible(false);
 
-    //subpage tradinginstruments
     QStackedWidget* tradingInstrumentsWidget = findChild<QStackedWidget*>("tradingInstrumentsWidget");
     TradingInstruments* tradingInstrumentsObject = new TradingInstruments();
     tradingInstrumentsWidget->addWidget(tradingInstrumentsObject);
     tradingInstrumentsWidget->setVisible(true);
 
-    tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject); //initially trading instruments are mainpage
+    tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject);
 
     QStackedWidget* portfolioWidget = findChild<QStackedWidget*>("portfolioWidget");
     Portfolio* portfolioObject = new Portfolio();
     portfolioWidget->addWidget(portfolioObject);
     portfolioWidget->setVisible(false);
+
+    fetchDataAndWriteToCSV();
+
+    tradingInstrumentsObject->loadInstruments(QCoreApplication::applicationDirPath() + "/../../data/instruments.csv");
 
     connect(ui->historyButton, &QPushButton::clicked, [this, historyWidget, historyWidgetObject, tradingInstrumentsWidget, portfolioWidget, detailsWidget]() {
         tradingInstrumentsWidget->setVisible(false);
@@ -80,6 +85,8 @@ StartMenu::StartMenu(QWidget *parent)
         ui->historyButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
         ui->portfolioButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         historyWidget->setCurrentWidget(historyWidgetObject);
+
+        historyWidgetObject->loadHistory(QCoreApplication::applicationDirPath() + "/../../data/history.csv");
     });
 
     connect(ui->instrumentsButton, &QPushButton::clicked, [this, tradingInstrumentsWidget, tradingInstrumentsObject, historyWidget, portfolioWidget, detailsWidget]() {
@@ -91,6 +98,8 @@ StartMenu::StartMenu(QWidget *parent)
         ui->historyButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         ui->portfolioButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         tradingInstrumentsWidget->setCurrentWidget(tradingInstrumentsObject);
+
+        tradingInstrumentsObject->loadInstruments(QCoreApplication::applicationDirPath() + "/../../data/instruments.csv");
     });
 
     connect(ui->portfolioButton, &QPushButton::clicked, [this, portfolioWidget, portfolioObject, tradingInstrumentsWidget, historyWidget, detailsWidget]() {
@@ -102,21 +111,28 @@ StartMenu::StartMenu(QWidget *parent)
         ui->historyButton->setStyleSheet("QPushButton { color: white; font-size: 22px; }");
         ui->portfolioButton->setStyleSheet("QPushButton { color: lime; font-size: 22px; }");
         portfolioWidget->setCurrentWidget(portfolioObject);
+
+        portfolioObject->loadPortfolio(QCoreApplication::applicationDirPath() + "/../../data/portfolio.csv");
     });
 
     connect(tradingInstrumentsObject, &TradingInstruments::instrumentSelected,
             [this, portfolioWidget, detailsWidget, tradingInstrumentsWidget, historyWidget, detailsWidgetObject](const QString &instrumentName) {
-                // Adjust visibility of widgets as needed
                 portfolioWidget->setVisible(false);
                 tradingInstrumentsWidget->setVisible(false);
                 historyWidget->setVisible(false);
                 detailsWidget->setVisible(true);
                 showDetailsWidget(instrumentName);
+
+                connect(detailsWidgetObject, &details::balanceUpdated, this, &StartMenu::updateBalanceDisplays);
             });
 
     connect(ui->depositButton, &QPushButton::clicked, this, &StartMenu::showDepositDialog);
     connect(ui->withdrawalButton, &QPushButton::clicked, this, &StartMenu::showWithdrawalDialog);
     connect(ui->refreshValue, &QPushButton::clicked, this, &StartMenu::updateRefreshButton);
+
+    connect(ui->refreshValue, &QPushButton::clicked, this, &StartMenu::refreshDataAndReloadTable); // Connect refresh button
+
+    connect(ui->refreshValue, &QPushButton::clicked, this, &StartMenu::updateBalanceDisplays);
 
     updateBalanceDisplay();
     updateAllocatedFundsDisplay();
@@ -130,26 +146,24 @@ StartMenu::~StartMenu()
     delete timer;
 }
 
-// This function should correctly handle showing the detailsWidget
 void StartMenu::showDetailsWidget(const QString &instrumentName) {
     QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
-    details* detailsWidgetObject = findChild<details*>(); // Make sure this retrieves the correct widget
+    details* detailsWidgetObject = findChild<details*>();
 
     if (!detailsWidget || !detailsWidgetObject) {
         qDebug() << "Details widget or object not found or not properly initialized";
         return;
     }
 
-    detailsWidget->setCurrentWidget(detailsWidgetObject); // Set the current widget to detailsWidgetObject
-    detailsWidgetObject->updateDetails(instrumentName.toUpper()); // Assuming updateDetails expects uppercase
-    detailsWidget->setVisible(true); // Ensure the entire stack is visible
+    detailsWidget->setCurrentWidget(detailsWidgetObject);
+    detailsWidgetObject->updateDetails(instrumentName.toUpper());
+    detailsWidget->setVisible(true);
 }
-
 
 void StartMenu::showDetails(const QString &instrumentName) {
     QStackedWidget* detailsWidget = findChild<QStackedWidget*>("detailsWidget");
     details* detailsWidgetObject = new details();
-    detailsWidgetObject->updateDetails(instrumentName); // Assuming Details class has this method
+    detailsWidgetObject->updateDetails(instrumentName);
     ui->detailsWidget->setCurrentWidget(detailsWidget);
     detailsWidget->setVisible(true);
     qDebug() << qPrintable(instrumentName);
@@ -165,6 +179,7 @@ void StartMenu::updateRefreshButton() {
     QDateTime now = QDateTime::currentDateTime();
     QString dateTimeText = now.toString("hh:mm:ss dd.MM.yyyy");
     ui->refreshValue->setText(dateTimeText);
+    updateBalanceDisplays();
 }
 
 void StartMenu::updateMarketStatus() {
@@ -182,11 +197,11 @@ void StartMenu::updateMarketStatus() {
     ui->marketStatusValue->setText(marketStatus);
 }
 
-//balance
 void StartMenu::addDepositAmount(double amount)
 {
     balance += amount;
     freeFunds += amount;
+    saveBalancetoCSV();
     emit balanceChanged(balance);
     emit freeFundsChanged(freeFunds);
     updateBalanceDisplay();
@@ -197,6 +212,7 @@ void StartMenu::subtractWithdrawalAmount(double amount)
 {
     balance -= amount;
     freeFunds -= amount;
+    saveBalancetoCSV();
     emit balanceChanged(balance);
     emit freeFundsChanged(freeFunds);
     updateBalanceDisplay();
@@ -221,7 +237,11 @@ void StartMenu::updateFreeFundsDisplay()
     ui->freeFundsValue->setText(QString::number(freeFunds, 'f', 2));
 }
 
-//deposit page
+void StartMenu::updateBalanceDisplays()
+{
+    loadBalancefromCSV();
+}
+
 void StartMenu::showDepositDialog() {
     Deposit depositDialog(this);
     connect(&depositDialog, &Deposit::depositMade, this, &StartMenu::addDepositAmount);
@@ -259,8 +279,8 @@ void StartMenu::loadSettingsfromCSV() {
     }
 
     QTextStream in(&file);
-    QString header = in.readLine(); // Skip header line
-    QString line = in.readLine(); // Read data line
+    QString header = in.readLine();
+    QString line = in.readLine();
     QStringList fields = line.split(',');
 
     if (fields.size() == 4) {
@@ -276,4 +296,83 @@ void StartMenu::loadSettingsfromCSV() {
     }
 
     file.close();
+}
+
+void StartMenu::loadBalancefromCSV() {
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/balance.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open balance file for reading.";
+        return;
+    }
+
+    QTextStream in(&file);
+    QString line = in.readLine();
+    QStringList fields = line.split(' ');
+
+    if (fields.size() == 2) {
+        freeFunds = fields[0].toDouble();
+        allocatedFunds = fields[1].toDouble();
+        balance = freeFunds + allocatedFunds;
+
+        updateFreeFundsDisplay();
+        updateAllocatedFundsDisplay();
+        updateBalanceDisplay();
+    }
+
+    file.close();
+}
+
+void StartMenu::saveBalancetoCSV() {
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/balance.csv");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open balance file for writing.";
+        return;
+    }
+
+    QTextStream out(&file);
+    out << freeFunds << " " << allocatedFunds << "\n";
+
+    file.close();
+}
+
+void StartMenu::fetchDataAndWriteToCSV() {
+    auto gold = Gold();
+    auto usd = Currency("USD");
+    auto eur = Currency("EUR");
+    auto btc = CryptoApi("BTC");
+    auto jpy = Currency("JPY");
+    auto gbp = Currency("GBP");
+
+    gold.refreshData();
+    usd.refreshData();
+    eur.refreshData();
+    btc.refreshData();
+    jpy.refreshData();
+    gbp.refreshData();
+
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/instruments.csv");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open instruments file for writing.";
+        return;
+    }
+
+    QTextStream out(&file);
+    out << gold.getName() << "," << gold.getValue() << "," << gold.difference() << "\n";
+    out << usd.getName() << "," << usd.getValue() << "," << usd.difference() << "\n";
+    out << eur.getName() << "," << eur.getValue() << "," << eur.difference() << "\n";
+    out << btc.getName() << "," << btc.getValue() << "," << btc.difference() << "\n";
+    out << jpy.getName() << "," << jpy.getValue() << "," << jpy.difference() << "\n";
+    out << gbp.getName() << "," << gbp.getValue() << "," << gbp.difference() << "\n";
+
+    file.close();
+}
+
+void StartMenu::refreshDataAndReloadTable() {
+    fetchDataAndWriteToCSV();
+
+    QStackedWidget* tradingInstrumentsWidget = findChild<QStackedWidget*>("tradingInstrumentsWidget");
+    TradingInstruments* tradingInstrumentsObject = findChild<TradingInstruments*>();
+    if (tradingInstrumentsWidget && tradingInstrumentsObject) {
+        tradingInstrumentsObject->loadInstruments(QCoreApplication::applicationDirPath() + "/../../data/instruments.csv");
+    }
 }

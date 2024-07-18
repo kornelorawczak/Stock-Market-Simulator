@@ -70,26 +70,6 @@
      </font>
     </property>
    </column>
-   <column>
-    <property name="text">
-     <string>side</string>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>profit</string>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
   </widget>
  </widget>
  <resources/>

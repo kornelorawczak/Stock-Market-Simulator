@@ -12,23 +12,30 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QTableWidget>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_Portfolio
 {
 public:
-    QPushButton *pushButton;
+    QTableWidget *portfolioTable;
 
     void setupUi(QDialog *Portfolio)
     {
         if (Portfolio->objectName().isEmpty())
             Portfolio->setObjectName("Portfolio");
         Portfolio->resize(940, 484);
-        pushButton = new QPushButton(Portfolio);
-        pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(250, 210, 80, 22));
+        portfolioTable = new QTableWidget(Portfolio);
+        if (portfolioTable->columnCount() < 2)
+            portfolioTable->setColumnCount(2);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        portfolioTable->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        portfolioTable->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        portfolioTable->setObjectName("portfolioTable");
+        portfolioTable->setGeometry(QRect(0, 0, 940, 484));
 
         retranslateUi(Portfolio);
 
@@ -38,7 +45,10 @@ public:
     void retranslateUi(QDialog *Portfolio)
     {
         Portfolio->setWindowTitle(QCoreApplication::translate("Portfolio", "Dialog", nullptr));
-        pushButton->setText(QCoreApplication::translate("Portfolio", "PushButton", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = portfolioTable->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("Portfolio", "Name", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = portfolioTable->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("Portfolio", "Quantity", nullptr));
     } // retranslateUi
 
 };

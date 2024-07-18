@@ -190,19 +190,6 @@ QWidget#mainWin {
       <string>Balance:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="changeLabel">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>60</y>
-       <width>45</width>
-       <height>15</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>24hchg</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="balanceValue">
      <property name="geometry">
       <rect>

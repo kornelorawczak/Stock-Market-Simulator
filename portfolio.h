@@ -2,10 +2,7 @@
 #define PORTFOLIO_H
 
 #include <QDialog>
-
-namespace Ui {
-class Portfolio;
-}
+#include <QTableWidget>
 
 class Portfolio : public QDialog
 {
@@ -14,9 +11,14 @@ class Portfolio : public QDialog
 public:
     explicit Portfolio(QWidget *parent = nullptr);
     ~Portfolio();
+    void loadPortfolio(const QString &filePath);
 
 private:
-    Ui::Portfolio *ui;
+    QTableWidget *portfolioTable;
+
+    void setupTable();
+    void setDarkTheme();
+    void populateTable(const QStringList &data);
 };
 
 #endif // PORTFOLIO_H

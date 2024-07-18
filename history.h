@@ -1,29 +1,23 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QDialog>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QTableWidgetItem>
-#include <QCoreApplication>
+#include <QWidget>
+#include <QTableWidget>
 
-namespace Ui {
-class History;
-}
-
-class History : public QDialog
+class History : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit History(QWidget *parent = nullptr);
-    ~History();
+    void loadHistory(const QString &filePath);
 
-    void saveCSVData();
-    void loadCSVData();
 private:
-    Ui::History *ui;
+    QTableWidget *historyTable;
+
+    void setupTable();
+    void setDarkTheme();
+    void populateTable(const QStringList &data);
 };
 
 #endif // HISTORY_H

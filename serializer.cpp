@@ -1,46 +1,45 @@
 #include <iostream>
-#include <string>
-#include <httplib.h>
-#include <fstream>
-#include <ctime>
-#include <nlohmann/json.hpp>
-#include <cmath>
-#include "serializer.hpp"
-#include "data.hpp"
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
+#include "serializer.h"
+#include "data.h"
+#include <QCoreApplication>
 
 using namespace std;
-using namespace nlohmann;
-using namespace httplib;
 
-map<string, double> Serializer::portfolio;
-double Serializer::freeFunds;
-double Serializer::allocatedFunds;
+QMap<QString, double> Serializer::portfolio;
+double Serializer::freeFunds = 0.0;
+double Serializer::allocatedFunds = 0.0;
 
 void Serializer::loadBalance() {
-    ifstream file("balance.csv");
-    if (!file.is_open()) {
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/balance.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         cerr << "Can't open balance file" << endl;
         return;
     }
-    string line;
-    if (getline(file, line)) {
-        istringstream iss(line);
-        iss >> freeFunds >> allocatedFunds;
+    QTextStream in(&file);
+    QString line = in.readLine();
+    if (!line.isNull()) {
+        QStringList fields = line.split(" ");
+        if (fields.size() == 2) {
+            freeFunds = fields[0].toDouble();
+            allocatedFunds = fields[1].toDouble();
+        }
     }
     file.close();
 }
 
-
 void Serializer::saveBalance() {
-    ofstream file("balance.csv");
-    if (!file.is_open()){
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/balance.csv");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         cerr << "Can't open balance file to write in" << endl;
         return;
     }
-    file << freeFunds << " " << allocatedFunds << endl;
+    QTextStream out(&file);
+    out << freeFunds << " " << allocatedFunds << "\n";
     file.close();
 }
-
 
 void Serializer::changeAllocatedFunds(double amount) {
     loadBalance();
@@ -50,93 +49,103 @@ void Serializer::changeAllocatedFunds(double amount) {
 
 void Serializer::changeFreeFunds(double amount) {
     loadBalance();
-    if (freeFunds + amount < 0){
+    if (freeFunds + amount < 0) {
         throw invalid_argument("Not enough free funds to make this purchase");
     }
     freeFunds += amount;
     saveBalance();
 }
 
-void Serializer::loadPortfolio(){
-    ifstream portfolioFile("portfolio.csv");
-    if (!portfolioFile.is_open()) {
+void Serializer::loadPortfolio() {
+    QFile portfolioFile(QCoreApplication::applicationDirPath() + "/../../data/portfolio.csv");
+    if (!portfolioFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         cerr << "Can't open portfolio.csv!" << endl;
         return;
     }
+    QTextStream in(&portfolioFile);
     portfolio.clear();
-    string line;
-    while(getline(portfolioFile, line)){
-        istringstream iss(line);
-        string id;
-        int qty;
-        if (!(iss >> id >> qty)){
-            break;
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        QStringList fields = line.split(" ");
+        if (fields.size() == 2) {
+            QString id = fields[0];
+            double qty = fields[1].toDouble();
+            portfolio[id] = qty;
         }
-        portfolio[id] = qty;
     }
     portfolioFile.close();
 }
+
 void Serializer::savePortfolio() {
-    ofstream portfolioFile("portfolio.csv");
-    if (!portfolioFile.is_open()) {
+    QFile portfolioFile(QCoreApplication::applicationDirPath() + "/../../data/portfolio.csv");
+    if (!portfolioFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         cerr << "Nie można otworzyć pliku portfolio.csv!" << endl;
         return;
     }
-
-    for (const auto& p : portfolio) {
-        portfolioFile << p.first << " " << p.second << endl;
+    QTextStream out(&portfolioFile);
+    QMapIterator<QString, double> i(portfolio);
+    while (i.hasNext()) {
+        i.next();
+        out << i.key() << " " << i.value() <<  "\n";
     }
     portfolioFile.close();
 }
-void Serializer::updatePortfolio(const string& assetName, double quantity){
+
+void Serializer::updatePortfolio(const QString& assetName, double quantity) {
     loadPortfolio();
-    auto it = portfolio.find(assetName);
-    if (it != portfolio.end()){
+    if (portfolio.contains(assetName)) {
         if (quantity > 0) {
-            it->second += quantity;
-        }
-        else{
-            if (it->second + quantity < 0) {
+            portfolio[assetName] += quantity;
+        } else {
+            if (portfolio[assetName] + quantity < 0) {
                 throw runtime_error("Can't sell that much!");
             }
-            it->second += quantity;
+            portfolio[assetName] += quantity;
         }
-    }
-    else{
-        if (quantity < 0){
+    } else {
+        if (quantity < 0) {
             throw runtime_error("Can't sell that much!");
         }
         portfolio[assetName] = quantity;
     }
     savePortfolio();
 }
-void Serializer::performAction(const Data& asset, double quantity){
-    if (quantity < 0 && portfolio[asset.getName()] > quantity){
+
+void Serializer::performAction(const Data& asset, double quantity) {
+    loadPortfolio();
+    if (quantity < 0 && portfolio[asset.getName()] < (-1) * quantity) {
+        qDebug () << quantity << " " << portfolio[asset.getName()];
         throw invalid_argument("Can't sell what you don't have!");
     }
     changeFreeFunds(asset.getValue() * (-1) * quantity);
     changeAllocatedFunds(asset.getValue() * quantity);
-    ofstream history_file("history.csv", ios_base::app);
-    if (!history_file.is_open()) {
+
+    QFile historyFile(QCoreApplication::applicationDirPath() + "/../../data/history.csv");
+    if (!historyFile.open(QIODevice::Append | QIODevice::Text)) {
         cerr << "File can't be open!" << endl;
         return;
     }
-    time_t now = time(nullptr);
-    char dateStr[11];
-    strftime(dateStr, sizeof(dateStr), "%Y-%m-%d", localtime(&now));
-    history_file << asset.getName() << "," << asset.getValue() << "," << dateStr << "," << quantity << endl;
-    if(!history_file){
-        cerr << "File input error!" << endl;
-    }
-    history_file.close();
+    QTextStream out(&historyFile);
+    QDateTime now = QDateTime::currentDateTime();
+    QString dateStr = now.toString("yyyy-MM-dd");
+    out << asset.getName() << "," << asset.getValue() << "," << dateStr << "," << quantity <<  "\n";
+    historyFile.close();
     updatePortfolio(asset.getName(), quantity);
 }
-void Serializer::deleteHistory(){
-    ofstream file("history.csv", ios_base::trunc);
-    file.close();
-}
-void Serializer::deletePortfolio(){
-    ofstream file("portfolio.csv", ios_base::trunc);
-    file.close();
+
+void Serializer::deleteHistory() {
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/history.csv");
+    if (file.exists()) {
+        file.open(QIODevice::WriteOnly | QIODevice::Truncate);
+        file.close();
+    }
 }
 
+void Serializer::deletePortfolio() {
+    QFile file(QCoreApplication::applicationDirPath() + "/../../data/portfolio.csv");
+    if (file.exists()) {
+        file.open(QIODevice::WriteOnly | QIODevice::Truncate);
+        file.close();
+    }
+}

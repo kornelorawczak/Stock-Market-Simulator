@@ -25,7 +25,9 @@ public:
 
 public slots:
     void updateRefreshButton();
-    void showDetails(const QString &instrumentName); // Slot to handle showing details
+    void showDetails(const QString &instrumentName);
+    void refreshDataAndReloadTable();
+    void updateBalanceDisplays();
 
 signals:
     void balanceChanged(double newBalance);
@@ -36,7 +38,7 @@ private:
     Ui::StartMenu *ui;
     double balance;
     QTimer *timer;
-    QTimer *midnightTimer; //new day checker
+    QTimer *midnightTimer;
     int currentWeekday;
     double freeFunds;
     double allocatedFunds;
@@ -53,5 +55,9 @@ private:
 
     void saveSettingstoCSV();
     void loadSettingsfromCSV();
+    void loadBalancefromCSV();
+    void saveBalancetoCSV();
+    void fetchDataAndWriteToCSV();
 };
+
 #endif // STARTMENU_H

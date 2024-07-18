@@ -13,18 +13,25 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QTableWidget" name="portfolioTable">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>210</y>
-     <width>80</width>
-     <height>22</height>
+     <x>0</x>
+     <y>0</y>
+     <width>940</width>
+     <height>484</height>
     </rect>
    </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
+   <column>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Quantity</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

@@ -18,10 +18,12 @@ public:
 signals:
     void withdrawalMade(double amount);
 
+private slots:
+    void handleWithdrawal();
+
 private:
     Ui::withdrawal *ui;
-
-    void handleWithdrawal();
+    double loadFreeFunds();
 };
 
 #endif // WITHDRAWAL_H

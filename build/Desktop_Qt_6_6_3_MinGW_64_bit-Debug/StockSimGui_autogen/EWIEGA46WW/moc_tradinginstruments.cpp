@@ -41,7 +41,7 @@ constexpr auto qt_meta_stringdata_CLASSTradingInstrumentsENDCLASS = QtMocHelpers
     "TradingInstruments",
     "instrumentSelected",
     "",
-    "name",
+    "instrumentName",
     "onCellClicked",
     "row",
     "column"
@@ -52,7 +52,7 @@ struct qt_meta_stringdata_CLASSTradingInstrumentsENDCLASS_t {
     char stringdata0[19];
     char stringdata1[19];
     char stringdata2[1];
-    char stringdata3[5];
+    char stringdata3[15];
     char stringdata4[14];
     char stringdata5[4];
     char stringdata6[7];
@@ -64,15 +64,15 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSTradingInstrumentsENDCLASS_t qt
         QT_MOC_LITERAL(0, 18),  // "TradingInstruments"
         QT_MOC_LITERAL(19, 18),  // "instrumentSelected"
         QT_MOC_LITERAL(38, 0),  // ""
-        QT_MOC_LITERAL(39, 4),  // "name"
-        QT_MOC_LITERAL(44, 13),  // "onCellClicked"
-        QT_MOC_LITERAL(58, 3),  // "row"
-        QT_MOC_LITERAL(62, 6)   // "column"
+        QT_MOC_LITERAL(39, 14),  // "instrumentName"
+        QT_MOC_LITERAL(54, 13),  // "onCellClicked"
+        QT_MOC_LITERAL(68, 3),  // "row"
+        QT_MOC_LITERAL(72, 6)   // "column"
     },
     "TradingInstruments",
     "instrumentSelected",
     "",
-    "name",
+    "instrumentName",
     "onCellClicked",
     "row",
     "column"

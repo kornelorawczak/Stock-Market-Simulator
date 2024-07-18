@@ -31,6 +31,9 @@ public:
     QLabel *label;
     QLabel *price;
     QWidget *chartWidget;
+    QLabel *MAlabel;
+    QLabel *Volatilitylabel;
+    QLabel *MACDlabel;
 
     void setupUi(QDialog *details)
     {
@@ -86,6 +89,15 @@ public:
         chartWidget = new QWidget(details);
         chartWidget->setObjectName("chartWidget");
         chartWidget->setGeometry(QRect(70, 140, 781, 291));
+        MAlabel = new QLabel(details);
+        MAlabel->setObjectName("MAlabel");
+        MAlabel->setGeometry(QRect(510, 30, 121, 31));
+        Volatilitylabel = new QLabel(details);
+        Volatilitylabel->setObjectName("Volatilitylabel");
+        Volatilitylabel->setGeometry(QRect(650, 30, 131, 31));
+        MACDlabel = new QLabel(details);
+        MACDlabel->setObjectName("MACDlabel");
+        MACDlabel->setGeometry(QRect(790, 30, 131, 31));
 
         retranslateUi(details);
 
@@ -101,6 +113,9 @@ public:
         priceLabel->setText(QString());
         label->setText(QCoreApplication::translate("details", "NAME", nullptr));
         price->setText(QCoreApplication::translate("details", "PRICE", nullptr));
+        MAlabel->setText(QString());
+        Volatilitylabel->setText(QString());
+        MACDlabel->setText(QString());
     } // retranslateUi
 
 };

@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-e045a6df86d8417cc47e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "StockSimGui",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "StockSimGui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-StockSimGui-Debug-694b2c76046d99925df3.json",
+					"name" : "StockSimGui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "StockSimGui_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-StockSimGui_autogen-Debug-181c47eb5feced4e2c8e.json",
+					"name" : "StockSimGui_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "StockSimGui_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-StockSimGui_autogen_timestamp_deps-Debug-3f7bb667a6987fcaa3a8.json",
+					"name" : "StockSimGui_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/coding/github/try190140/bedziedzialac/StockSim/StockSimGui/build/Desktop_Qt_6_6_3_MinGW_64_bit-Debug",
+		"source" : "D:/coding/github/try190140/bedziedzialac/StockSim/StockSimGui"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

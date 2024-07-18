@@ -33,7 +33,6 @@ public:
     QPushButton *instrumentsButton;
     QFrame *balance;
     QLabel *balanceLabel;
-    QLabel *changeLabel;
     QLabel *balanceValue;
     QFrame *information;
     QLabel *dateLabel;
@@ -131,9 +130,6 @@ public:
         balanceLabel->setStyleSheet(QString::fromUtf8("QLabel#balanceLabel {\n"
 "	font-size: 24px;\n"
 "}"));
-        changeLabel = new QLabel(balance);
-        changeLabel->setObjectName("changeLabel");
-        changeLabel->setGeometry(QRect(80, 60, 45, 15));
         balanceValue = new QLabel(balance);
         balanceValue->setObjectName("balanceValue");
         balanceValue->setGeometry(QRect(150, 40, 141, 20));
@@ -301,7 +297,6 @@ public:
         freeFundsValue->setText(QString());
         instrumentsButton->setText(QCoreApplication::translate("StartMenu", "trading instruments", nullptr));
         balanceLabel->setText(QCoreApplication::translate("StartMenu", "Balance:", nullptr));
-        changeLabel->setText(QCoreApplication::translate("StartMenu", "24hchg", nullptr));
         balanceValue->setText(QString());
         dateLabel->setText(QCoreApplication::translate("StartMenu", "Date: ", nullptr));
         refreshLabel->setText(QCoreApplication::translate("StartMenu", "Refreshed:", nullptr));

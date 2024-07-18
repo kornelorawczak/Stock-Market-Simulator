@@ -6,29 +6,41 @@
 #include <QtCharts/QValueAxis>
 #include <QVBoxLayout>
 #include <QDir>
+#include <QMessageBox>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include "serializer.h"
 
 details::details(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::details)
+    , instrumentObject(nullptr)
 {
     ui->setupUi(this);
 
-    QFont font = ui->textEdit->font();
+    QFont font = ui->nameLabel->font();
     font.setPointSize(16);
-    ui->textEdit->setFont(font);
+    ui->nameLabel->setFont(font);
 
-    QFont font2 = ui->textEdit_2->font();
+    QFont font2 = ui->priceLabel->font();
     font2.setPointSize(16);
-    ui->textEdit_2->setFont(font2);
+    ui->priceLabel->setFont(font2);
+
+    connect(ui->buyButton, &QPushButton::clicked, this, &details::onBuyButtonClicked);
+    connect(ui->sellButton, &QPushButton::clicked, this, &details::onSellButtonClicked);
 }
 
 details::~details()
 {
     delete ui;
+    if (instrumentObject) {
+        delete instrumentObject;
+    }
 }
 
 void details::updateDetails(const QString &instrumentName) {
-    QString filePath = QDir(QCoreApplication::applicationDirPath()).filePath("../../data/records.csv"); // Provide the actual path to the CSV file
+    QString filePath = QDir(QCoreApplication::applicationDirPath()).filePath("../../data/records.csv");
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Unable to open the file:" << filePath;
@@ -37,15 +49,33 @@ void details::updateDetails(const QString &instrumentName) {
 
     QTextStream in(&file);
     bool found = false;
-    QString upperInstrumentName = instrumentName.toUpper(); // Convert input to uppercase
+    QString upperInstrumentName = instrumentName.toUpper();
 
     while (!in.atEnd() && !found) {
         QString line = in.readLine();
         QStringList fields = line.split(',');
-        if (fields.size() == 2 && fields[0].trimmed() == instrumentName.trimmed()) {
+        if (fields.size() > 1 && fields[0].trimmed() == instrumentName.trimmed()) {
             ui->nameLabel->setText(fields[0]);
             ui->priceLabel->setText(QString::number(fields[1].toDouble(), 'f', 2));
             found = true;
+
+            if (fields[0] == "GOLD") {
+                instrumentObject = new Gold();
+            } else if (fields[0] == "USD") {
+                instrumentObject = new Currency("USD");
+            } else if (fields[0] == "EUR") {
+                instrumentObject = new Currency("EUR");
+            } else if (fields[0] == "BTC") {
+                instrumentObject = new CryptoApi("BTC");
+            } else if (fields[0] == "JPY") {
+                instrumentObject = new CryptoApi("JPY");
+            } else if (fields[0] == "GBP") {
+                instrumentObject = new Currency("GBP");
+            }
+
+            if (instrumentObject) {
+                instrumentObject->refreshData();
+            }
         }
     }
 
@@ -55,11 +85,9 @@ void details::updateDetails(const QString &instrumentName) {
     }
 
     file.close();
-
-    loadChartData(QDir(QCoreApplication::applicationDirPath()).filePath("../../data/records.csv"));
+    loadChartData(filePath);
+    loadIndicators(filePath);
 }
-
-#include <QtCharts/QValueAxis>
 
 void details::loadChartData(const QString &chartFilePath) {
     QFile file(chartFilePath);
@@ -72,66 +100,124 @@ void details::loadChartData(const QString &chartFilePath) {
     QLineSeries *series = new QLineSeries();
     QStringList values;
 
-    double maxValue = 0;  // To track the maximum y-value
-    double minValue = std::numeric_limits<double>::max(); // Start with the largest possible double
+    double maxValue = 0;
+    double minValue = std::numeric_limits<double>::max();
 
-    // Read the single line containing all values
     if (!in.atEnd()) {
         QString line = in.readLine().trimmed();
         values = line.split(',');
 
-        // Convert each value to double, add to series, and update max and min values
-        for (int i = 0; i < values.size(); ++i) {
+        for (int i = 1; i < values.size(); ++i) {
             double y = values.at(i).toDouble();
-            series->append(i, y);
+            series->append(i - 1, y);
             if (y > maxValue) {
-                maxValue = y;  // Update the maximum value found
+                maxValue = y;
             }
             if (y < minValue) {
-                minValue = y;  // Update the minimum value found
+                minValue = y;
             }
         }
     }
 
     file.close();
-
     QChart *chart = new QChart();
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
     chart->setTitle("Price Chart");
 
-    // Apply the dark theme
     chart->setTheme(QChart::ChartThemeDark);
 
-    // Set series color to light blue
     series->setColor(QColor("#ADD8E6"));
 
-    // Scale the y-axis from the minimum value found to 105% of the maximum value
     auto yAxis = new QValueAxis();
     yAxis->setRange(minValue, maxValue * 1.05);
     chart->setAxisY(yAxis, series);
 
     auto xAxis = new QValueAxis();
-    xAxis->setRange(0, values.size() - 1);
-    xAxis->setTickInterval(1); // Ensures tick marks at every integer
-    xAxis->setLabelFormat("%d"); // Format labels as integers
+    xAxis->setRange(0, values.size() - 2);
+    xAxis->setTickInterval(1);
+    xAxis->setLabelFormat("%d");
     xAxis->setTitleText("Days");
     chart->setAxisX(xAxis, series);
 
-    // Check if a chart view already exists
     if (ui->chartWidget->layout() && ui->chartWidget->layout()->count() > 0) {
         QLayoutItem *child;
         while ((child = ui->chartWidget->layout()->takeAt(0)) != nullptr) {
-            delete child->widget(); // safely delete the widget
-            delete child; // delete the layout item
+            delete child->widget();
+            delete child;
         }
     } else {
-        QVBoxLayout *layout = new QVBoxLayout(); // Create layout if it doesn't exist
+        QVBoxLayout *layout = new QVBoxLayout();
         ui->chartWidget->setLayout(layout);
     }
 
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     ui->chartWidget->layout()->addWidget(chartView);
+}
+
+void details::loadIndicators(const QString &chartFilePath) {
+    QFile file(chartFilePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Unable to open the file: " + chartFilePath);
+        return;
+    }
+
+    QTextStream in(&file);
+    QStringList lines;
+    while (!in.atEnd()) {
+        lines.append(in.readLine().trimmed());
+    }
+
+    file.close();
+
+    if (lines.size() < 3) {
+        QMessageBox::critical(this, "Error", "Not enough data to read indicators.");
+        return;
+    }
+
+    QString maValue = lines.at(lines.size() - 3);
+    QString volatilityValue = lines.at(lines.size() - 2);
+    QString macdValue = lines.at(lines.size() - 1);
+
+    ui->MAlabel->setText("MA = " + maValue);
+    ui->Volatilitylabel->setText("Volatility = " + volatilityValue);
+    ui->MACDlabel->setText("MACD = " + macdValue);
+}
+
+void details::onBuyButtonClicked() {
+    bool ok;
+    double quantity = ui->textEdit->toPlainText().toDouble(&ok);
+
+    if (!ok || quantity <= 0) {
+        QMessageBox::critical(this, "Error", "Please enter a valid quantity to buy.");
+        return;
+    }
+
+    try {
+        Serializer::performAction(*instrumentObject, quantity);
+        QMessageBox::information(this, "Success", "Successfully bought " + QString::number(quantity) + " units of " + instrumentObject->getName());
+        emit balanceUpdated();
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, "Error", e.what());
+    }
+}
+
+void details::onSellButtonClicked() {
+    bool ok;
+    double quantity = ui->textEdit_2->toPlainText().toDouble(&ok);
+
+    if (!ok || quantity <= 0) {
+        QMessageBox::critical(this, "Error", "Please enter a valid quantity to sell.");
+        return;
+    }
+
+    try {
+        Serializer::performAction(*instrumentObject, -quantity);
+        QMessageBox::information(this, "Success", "Successfully sold " + QString::number(quantity) + " units of " + instrumentObject->getName());
+        emit balanceUpdated();
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, "Error", e.what());
+    }
 }

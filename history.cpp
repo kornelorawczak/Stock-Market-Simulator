@@ -1,127 +1,97 @@
 #include "history.h"
-#include "ui_history.h"
-#include <QFileDialog>
+#include <QVBoxLayout>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QHeaderView>
 #include <QMessageBox>
 
-History::History(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::History)
+History::History(QWidget *parent) : QWidget(parent)
 {
-    ui->setupUi(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    historyTable = new QTableWidget(this);
+    setupTable();
+    layout->addWidget(historyTable);
+    setLayout(layout);
 
-    // Set the number of rows and columns
-    ui->historyTable->setColumnCount(6);
-
-    // Set headers
-    QStringList headers;
-    headers << "name" << "price" << "date" << "quantity" << "side" << "profit";
-    ui->historyTable->setHorizontalHeaderLabels(headers);
-
-    //adapt headers that they fit table size
-    ui->historyTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    ui->historyTable->setStyleSheet(
-        "QHeaderView::section {"
-        "background-color: black;"
-        "color: white;"
-        "border: none;"
-        "}"
-        "QTableCornerButton::section {"
-        "background-color: black;"
-        "border: none;"
-        "}"
-        "QTableWidget::item {"
-        "border: none;"
-        "}"
-        );
-
-    ui->historyTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    ui->historyTable->verticalHeader()->setDefaultSectionSize(30);
-    ui->historyTable->verticalHeader()->hide();
-
-    loadCSVData();
+    setDarkTheme();
 }
 
-History::~History()
+void History::setupTable()
 {
-    delete ui;
-    saveCSVData();
+    QStringList headers = {"Name", "Price", "Date", "Quantity"};
+    historyTable->setColumnCount(headers.size());
+    historyTable->setHorizontalHeaderLabels(headers);
+    historyTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-void History::saveCSVData()
+void History::setDarkTheme()
 {
-    QString filePath = QDir(QCoreApplication::applicationDirPath()).filePath("../../data/history.csv");
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Error", "Cannot open file for writing: " + file.errorString());
-        return;
-    }
-
-    QTextStream out(&file);
-    int rowCount = ui->historyTable->rowCount();
-    int columnCount = ui->historyTable->columnCount();
-
-    for (int row = 0; row < rowCount; ++row) {
-        QStringList rowData;
-        for (int column = 0; column < columnCount; ++column) {
-            QTableWidgetItem* item = ui->historyTable->item(row, column);
-            if (item)
-                rowData << item->text();
-            else
-                rowData << "";  // Handle null items
+    QString darkStyle = R"(
+        QTableWidget {
+            background-color: #2b2b2b;
+            color: #ffffff;
+            gridline-color: #444444;
         }
-        out << rowData.join(',') << "\n";
-    }
-
-    file.close();
+        QHeaderView::section {
+            background-color: #444444;
+            color: #ffffff;
+        }
+        QTableWidget QTableCornerButton::section {
+            background-color: #444444;
+        }
+        QScrollBar:vertical {
+            background-color: #2b2b2b;
+            width: 15px;
+            margin: 20px 0 20px 0;
+        }
+        QScrollBar::handle:vertical {
+            background-color: #444444;
+            min-height: 20px;
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            background-color: #2b2b2b;
+            height: 20px;
+            subcontrol-origin: margin;
+        }
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            background: none;
+        }
+    )";
+    historyTable->setStyleSheet(darkStyle);
 }
 
-
-void History::loadCSVData()
+void History::loadHistory(const QString &filePath)
 {
-    QString filePath = QDir(QCoreApplication::applicationDirPath()).filePath("../../data/history.csv");
-    qDebug() << "File Path: " <<filePath;
     QFile file(filePath);
-
-    if (!file.exists()) {
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QMessageBox::warning(this, "Error", "Failed to create file: " + file.errorString());
-            return;
-        }
-        file.close(); // Close the newly created empty file
-    }
-
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Error", "Cannot open file: " + file.errorString());
+        QMessageBox::critical(this, "Error", "Could not open file: " + filePath);
         return;
     }
 
     QTextStream in(&file);
-    QStringList lines = in.readAll().split('\n');
+    QStringList data;
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        data.append(line);
+    }
+
     file.close();
+    populateTable(data);
+}
 
-    ui->historyTable->setRowCount(lines.size());
+void History::populateTable(const QStringList &data)
+{
+    historyTable->setRowCount(data.size());
 
-    QFont font = ui->historyTable->font();
-    font.setPointSize(12);
+    for (int i = 0; i < data.size(); ++i) {
+        QStringList row = data[i].split(',');
 
-    for (int row = 0; row < lines.size(); ++row) {
-        QString line = lines.at(row);
-        if (line.isEmpty()) continue;
-
-        QStringList items = line.split(',');
-
-        for (int column = 0; column < items.size(); ++column) {
-            QTableWidgetItem *newItem = new QTableWidgetItem(items.at(column));
-            newItem->setFont(font); // Set font
-            newItem->setTextAlignment(Qt::AlignCenter);
-
-            //disable editing by user
-            Qt::ItemFlags flags = newItem->flags();
-            flags &= ~Qt::ItemIsEditable;
-            newItem->setFlags(flags);
-
-            ui->historyTable->setItem(row, column, newItem);
+        for (int j = 0; j < row.size(); ++j) {
+            QTableWidgetItem *item = new QTableWidgetItem(row[j]);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable); // Make the item non-editable
+            historyTable->setItem(i, j, item);
         }
     }
 }
