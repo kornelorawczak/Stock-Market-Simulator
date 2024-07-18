@@ -12,6 +12,8 @@ In order to open the application on your own pc, you have to do the following:
 
 -Open this project inside qt creator editor
 
+-Paste your own cryptocompare api key in 'data.h' file in the designated spot
+
 -Get into 'Projects' tab on the left-hand side, select QT 6.6.3 and press 'configure project' button on the bottom
 
 -Press green 'Build' button in the left bottom corner of your screen 
